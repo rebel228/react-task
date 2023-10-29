@@ -1,12 +1,13 @@
+import { Component } from "react";
 import "./App.css";
 import PokemonsSearch from "./components/PokemonSearch/pokemonsSearch";
 
-function App() {
-  return (
-    <>
-      <PokemonsSearch />
-    </>
-  );
+export default class App extends Component {
+  render() {
+    return (
+      <>
+        <PokemonsSearch />
+      </>
+    );
+  }
 }
-
-export default App;
