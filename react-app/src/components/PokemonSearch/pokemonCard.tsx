@@ -6,6 +6,10 @@ export default class PokemonCard extends Component<PokemonResults> {
     return string.charAt(0).toLocaleUpperCase() + string.slice(1);
   };
 
+  cleanDescription = (string: string): string => {
+    return string.replace("\f", " ");
+  };
+
   render() {
     return (
       <div className="pokemon">
@@ -21,7 +25,9 @@ export default class PokemonCard extends Component<PokemonResults> {
           alt={"Image of" + this.props.name}
           className="pokemon__img"
         />
-        <p className="pokemon__text">{this.props.descr}</p>
+        <p className="pokemon__text">
+          {this.cleanDescription(this.props.descr)}
+        </p>
       </div>
     );
   }
