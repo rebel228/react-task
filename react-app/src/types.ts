@@ -9,6 +9,10 @@ export interface PokemonElementProps {
   pokemons: PokemonCardData[];
 }
 
+export interface PokemonElementState extends PokemonElementProps {
+  loading: boolean;
+}
+
 export type SearchBarProps = {
   search: (name: string) => void;
 };

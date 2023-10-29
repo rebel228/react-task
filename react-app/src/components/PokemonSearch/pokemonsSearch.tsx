@@ -3,8 +3,9 @@ import { Component, ReactNode, RefObject } from "react";
 import SearchResults from "./searchResults";
 import SearchBar from "./searchBar";
 import getPokemonDataByName from "../Api/getPokemonByName";
-import { PokemonElementProps } from "../../types";
+import { PokemonElementState } from "../../types";
 import "./PokemonSearch.css";
+import Loader from "../Loader/Loader";
 
 interface Props {
   children?: ReactNode;
@@ -16,8 +17,9 @@ export default class PokemonsSearch extends Component {
     super(props);
     this.searchBarElement = React.createRef();
   }
-  state: PokemonElementProps = {
+  state: PokemonElementState = {
     pokemons: [],
+    loading: false,
   };
 
   componentDidMount() {
@@ -29,20 +31,30 @@ export default class PokemonsSearch extends Component {
   }
 
   handleSearch = (name: string) => {
+    this.setState({ loading: true });
     getPokemonDataByName(name).then((data) => {
       this.setState({
         pokemons: data.filter((pokemon) => pokemon !== undefined),
+        loading: false,
       });
     });
     localStorage.setItem("search", name);
   };
 
   render() {
-    return (
-      <>
-        <SearchBar ref={this.searchBarElement} search={this.handleSearch} />
-        <SearchResults pokemons={this.state.pokemons} />
-      </>
-    );
+    if (this.state.loading) {
+      return (
+        <>
+          <SearchBar ref={this.searchBarElement} search={this.handleSearch} />
+          <Loader />
+        </>
+      );
+    } else
+      return (
+        <>
+          <SearchBar ref={this.searchBarElement} search={this.handleSearch} />
+          <SearchResults pokemons={this.state.pokemons} />
+        </>
+      );
   }
 }
