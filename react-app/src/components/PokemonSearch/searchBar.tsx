@@ -1,5 +1,6 @@
 import { ChangeEvent, Component } from "react";
 import { SearchBarProps, SearchBarData } from "../../types";
+import ErrorButton from "../ErrorButton/ErrorButton";
 
 export default class SearchBar extends Component<SearchBarProps> {
   constructor(props: SearchBarProps) {
@@ -29,6 +30,7 @@ export default class SearchBar extends Component<SearchBarProps> {
         >
           Search
         </button>
+        <ErrorButton />
       </div>
     );
   }
