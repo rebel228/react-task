@@ -1,7 +1,7 @@
 import { Component } from "react";
 import SearchResults from "./searchResults";
 import SearchBar from "./searchBar";
-import getPokemonByName from "../Api/getPokemonByName";
+import getPokemonDataByName from "../Api/getPokemonByName";
 
 export default class PokemonsSearch extends Component {
   state = {
@@ -12,7 +12,7 @@ export default class PokemonsSearch extends Component {
 
   componentDidMount() {
     console.log("mount");
-    getPokemonByName("").then((data) => {
+    getPokemonDataByName("").then((data) => {
       console.log(data);
     });
   }
