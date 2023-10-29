@@ -1,7 +1,7 @@
 import { Component } from "react";
-import { PokemonResults } from "../../types";
+import { PokemonCardData } from "../../types";
 
-export default class PokemonCard extends Component<PokemonResults> {
+export default class PokemonCard extends Component<PokemonCardData> {
   upperFirstLetter = (string: string): string => {
     return string.charAt(0).toLocaleUpperCase() + string.slice(1);
   };

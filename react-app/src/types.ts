@@ -1,10 +1,3 @@
-export type PokemonResults = {
-  name: string;
-  id: number;
-  imgUrl: string | null;
-  descr: string;
-};
-
 export type PokemonCardData = {
   name: string;
   key: number;
@@ -13,7 +6,7 @@ export type PokemonCardData = {
 };
 
 export interface PokemonElementProps {
-  pokemons: PokemonResults[];
+  pokemons: PokemonCardData[];
 }
 
 export type SearchBarProps = {

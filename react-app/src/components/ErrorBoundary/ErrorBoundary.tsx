@@ -23,7 +23,6 @@ export default class ErrorBoundary extends Component<Props, State> {
   }
 
   render() {
-    console.log(this.state);
     if (this.state.hasError) {
       return <h3>Something went wrong!</h3>;
     }

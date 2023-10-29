@@ -28,8 +28,6 @@ export default class PokemonsSearch extends Component {
     } else this.handleSearch("");
   }
 
-  componentWillUnmount() {}
-
   handleSearch = (name: string) => {
     getPokemonDataByName(name).then((data) => {
       this.setState({

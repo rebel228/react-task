@@ -11,8 +11,7 @@ export default class SearchResults extends Component<PokemonElementProps> {
       <div className="search-results">
         {this.props.pokemons.map((pokemon) => (
           <PokemonCard
-            key={pokemon.id}
-            id={pokemon.id}
+            key={pokemon.key}
             name={pokemon.name}
             imgUrl={pokemon.imgUrl}
             descr={pokemon.descr}

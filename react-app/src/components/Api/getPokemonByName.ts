@@ -1,11 +1,11 @@
 import { PokemonClient, NamedAPIResourceList } from "pokenode-ts";
-import { PokemonResults } from "../../types";
+import { PokemonCardData } from "../../types";
 
 const api = new PokemonClient();
 
 export default async function getPokemonDataByName(
   name: string,
-): Promise<(PokemonResults | undefined)[]> {
+): Promise<(PokemonCardData | undefined)[]> {
   if (name) {
     const data = await getPokemonByName(name);
     return [data];
@@ -13,7 +13,7 @@ export default async function getPokemonDataByName(
 }
 async function getPokemonByName(
   name: string,
-): Promise<PokemonResults | undefined> {
+): Promise<PokemonCardData | undefined> {
   const response = await api
     .getPokemonByName(name)
     .then((data) => data)
@@ -29,18 +29,18 @@ async function getPokemonByName(
   );
   return {
     name: response.name,
-    id: response.id,
+    key: response.id,
     imgUrl: response.sprites.front_default,
     descr: descr[0].flavor_text,
   };
 }
 
-async function getPokemonList(): Promise<(PokemonResults | undefined)[]> {
+async function getPokemonList(): Promise<(PokemonCardData | undefined)[]> {
   const response: NamedAPIResourceList | void = await api
     .listPokemons()
     .then((data) => data)
     .catch((error) => console.log(error));
-  const promises: Promise<PokemonResults | undefined>[] = [];
+  const promises: Promise<PokemonCardData | undefined>[] = [];
   if (!response) return [];
   for (const pokemon of response.results) {
     const promise = getPokemonByName(pokemon.name);
