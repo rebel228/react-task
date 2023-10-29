@@ -16,6 +16,10 @@ export type PokemonElementState = {
   pokemons: PokemonResults[];
 };
 
-export type SearchBarState = {
+export type SearchBarProps = {
   search: (name: string) => void;
+};
+
+export type SearchBarData = {
+  inputValue: string;
 };
