@@ -1,9 +1,9 @@
 import { Component } from "react";
-import { PokemonElementState } from "../../types";
+import { PokemonElementProps } from "../../types";
 import PokemonCard from "./pokemonCard";
 
-export default class SearchResults extends Component<PokemonElementState> {
-  constructor(props: PokemonElementState) {
+export default class SearchResults extends Component<PokemonElementProps> {
+  constructor(props: PokemonElementProps) {
     super(props);
   }
   render() {

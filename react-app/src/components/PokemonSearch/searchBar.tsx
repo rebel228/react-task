@@ -21,6 +21,7 @@ export default class SearchBar extends Component<SearchBarProps> {
           className="search__input"
           id="search"
           onChange={this.inputHandler}
+          value={this.state.inputValue}
         />
         <button
           className="search__button"

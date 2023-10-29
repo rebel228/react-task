@@ -12,9 +12,9 @@ export type PokemonCardData = {
   descr: string;
 };
 
-export type PokemonElementState = {
+export interface PokemonElementProps {
   pokemons: PokemonResults[];
-};
+}
 
 export type SearchBarProps = {
   search: (name: string) => void;
