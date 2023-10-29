@@ -2,10 +2,16 @@ import { Component } from "react";
 import { PokemonResults } from "../../types";
 
 export default class PokemonCard extends Component<PokemonResults> {
+  upperFirstLetter = (string: string): string => {
+    return string.charAt(0).toLocaleUpperCase() + string.slice(1);
+  };
+
   render() {
     return (
       <div className="pokemon">
-        <h6 className="pokemon__title">{this.props.name}</h6>
+        <h3 className="pokemon__title">
+          {this.upperFirstLetter(this.props.name)}
+        </h3>
         <img
           src={
             this.props.imgUrl

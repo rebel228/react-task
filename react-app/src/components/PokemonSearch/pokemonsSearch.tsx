@@ -3,6 +3,7 @@ import SearchResults from "./searchResults";
 import SearchBar from "./searchBar";
 import getPokemonDataByName from "../Api/getPokemonByName";
 import { PokemonElementState } from "../../types";
+import "./PokemonSearch.css";
 
 export default class PokemonsSearch extends Component {
   state: PokemonElementState = {

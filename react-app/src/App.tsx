@@ -7,12 +7,12 @@ import ErrorButton from "./components/ErrorButton/ErrorButton";
 export default class App extends Component {
   render() {
     return (
-      <>
+      <main>
         <ErrorBoundary>
           <PokemonsSearch />
           <ErrorButton />
         </ErrorBoundary>
-      </>
+      </main>
     );
   }
 }
