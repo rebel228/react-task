@@ -11,7 +11,9 @@ export default class PokemonsSearch extends Component {
 
   searchPokemonByName = (name: string) => {
     getPokemonDataByName(name).then((data) => {
-      this.setState({ pokemons: data });
+      this.setState({
+        pokemons: data.filter((pokemon) => pokemon !== undefined),
+      });
     });
   };
 
