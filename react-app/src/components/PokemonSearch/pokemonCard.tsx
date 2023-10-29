@@ -4,7 +4,7 @@ import { PokemonResults } from "../../types";
 export default class PokemonCard extends Component<PokemonResults> {
   render() {
     return (
-      <div className="pokemon" key={this.props.id}>
+      <div className="pokemon">
         <h6 className="pokemon__title">{this.props.name}</h6>
         <img
           src={
