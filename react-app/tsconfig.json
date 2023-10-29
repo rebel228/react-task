@@ -6,7 +6,7 @@
     "allowJs": false,
     "module": "ESNext",
     "skipLibCheck": true,
-    "esModuleInterop": true,    
+    "esModuleInterop": true,
 
     /* Bundler mode */
     "moduleResolution": "bundler",

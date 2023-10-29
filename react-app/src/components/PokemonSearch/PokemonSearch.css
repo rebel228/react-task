@@ -12,7 +12,8 @@
   border-radius: 18px;
 }
 
-.pokemon__title, .pokemon__text {
+.pokemon__title,
+.pokemon__text {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   margin: 10px 0;
 }
