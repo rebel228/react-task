@@ -15,7 +15,7 @@ export default class PokemonCard extends Component<PokemonResults> {
           alt={"Image of" + this.props.name}
           className="pokemon__img"
         />
-        <p className="pokemon__text"></p>
+        <p className="pokemon__text">{this.props.descr}</p>
       </div>
     );
   }

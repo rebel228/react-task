@@ -7,6 +7,8 @@ export default class SearchResults extends Component<PokemonElementState> {
     super(props);
   }
   render() {
+    console.log("render results");
+    console.log(this.props.pokemons);
     return (
       <div className="search-results">
         {this.props.pokemons.map((pokemon) => (
