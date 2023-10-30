@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "format:fix": "prettier -w",
+    "format:fix": "prettier . -w",
     "preview": "vite preview",
     "prepare": "cd .. && husky install react-app/.husky",
     "deploy": "npm run build && npx gh-pages -d dist -e react-components"
