@@ -24,7 +24,7 @@ export default class PokemonsSearch extends Component {
 
   componentDidMount() {
     const inputValue = localStorage.getItem("search");
-    if (inputValue && typeof inputValue === "string") {
+    if (inputValue) {
       this.searchBarElement.current?.setState({ inputValue });
       this.handleSearch(inputValue);
     } else this.handleSearch("");
@@ -32,12 +32,14 @@ export default class PokemonsSearch extends Component {
 
   handleSearch = (name: string) => {
     this.setState({ loading: true });
+
     getPokemonDataByName(name).then((data) => {
       this.setState({
         pokemons: data.filter((pokemon) => pokemon !== undefined),
         loading: false,
       });
     });
+
     localStorage.setItem("search", name);
   };
 

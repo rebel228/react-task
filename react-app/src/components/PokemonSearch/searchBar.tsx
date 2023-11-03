@@ -6,14 +6,18 @@ export default class SearchBar extends Component<SearchBarProps> {
   constructor(props: SearchBarProps) {
     super(props);
   }
+
   state: SearchBarData = {
     inputValue: "",
   };
+
   inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const lowerCase = event.target.value.toLocaleLowerCase();
+
     if (lowerCase) this.setState({ inputValue: lowerCase });
     else this.setState({ inputValue: "" });
   };
+
   render() {
     return (
       <div className="search">

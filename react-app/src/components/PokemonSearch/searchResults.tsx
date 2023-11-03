@@ -6,6 +6,7 @@ export default class SearchResults extends Component<PokemonElementProps> {
   constructor(props: PokemonElementProps) {
     super(props);
   }
+
   render() {
     return (
       <div className="search-results">
