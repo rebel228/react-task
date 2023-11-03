@@ -1,41 +1,43 @@
-import { ChangeEvent, Component } from "react";
-import { SearchBarProps, SearchBarData } from "../../types";
+import { ChangeEvent, useRef } from "react";
 import ErrorButton from "../ErrorButton/ErrorButton";
 
-export default class SearchBar extends Component<SearchBarProps> {
-  constructor(props: SearchBarProps) {
-    super(props);
-  }
+export default function SearchBar({
+  search,
+  inputValue,
+  setInputValue,
+}: {
+  search: (name: string) => void;
+  inputValue: string;
+  setInputValue: (value: string) => void;
+}) {
+  const searchFild = useRef<HTMLInputElement>(null);
 
-  state: SearchBarData = {
-    inputValue: "",
-  };
-
-  inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const lowerCase = event.target.value.toLocaleLowerCase();
 
-    if (lowerCase) this.setState({ inputValue: lowerCase });
-    else this.setState({ inputValue: "" });
+    if (lowerCase) setInputValue(lowerCase);
+    else setInputValue("");
   };
 
-  render() {
-    return (
-      <div className="search">
-        <input
-          type="text"
-          className="search__input"
-          id="search"
-          onChange={this.inputHandler}
-          value={this.state.inputValue}
-        />
-        <button
-          className="search__button"
-          onClick={() => this.props.search(this.state.inputValue)}
-        >
-          Search
-        </button>
-        <ErrorButton />
-      </div>
-    );
-  }
+  return (
+    <div className="search">
+      <input
+        type="text"
+        className="search__input"
+        id="search"
+        onChange={inputHandler}
+        value={inputValue}
+        ref={searchFild}
+      />
+      <button
+        className="search__button"
+        onClick={() =>
+          search(searchFild.current?.value ? searchFild.current.value : "")
+        }
+      >
+        Search
+      </button>
+      <ErrorButton />
+    </div>
+  );
 }

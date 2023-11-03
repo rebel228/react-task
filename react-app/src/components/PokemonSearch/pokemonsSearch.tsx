@@ -1,62 +1,55 @@
-import React from "react";
-import { Component, ReactNode, RefObject } from "react";
+import { useEffect, useState } from "react";
 import SearchResults from "./searchResults";
 import SearchBar from "./searchBar";
 import getPokemonDataByName from "../Api/getPokemonByName";
-import { PokemonElementState } from "../../types";
 import "./PokemonSearch.css";
 import Loader from "../Loader/Loader";
+import { PokemonCardData } from "../../types";
 
-interface Props {
-  children?: ReactNode;
-}
+export default function PokemonsSearch() {
+  const initialPokemons: (PokemonCardData | undefined)[] = [];
+  const [pokemons, setPokemons] = useState(initialPokemons);
+  const [loading, setLoading] = useState(true);
+  const [inputValue, setInputValue] = useState("");
 
-export default class PokemonsSearch extends Component {
-  searchBarElement: RefObject<SearchBar>;
-  constructor(props: Props) {
-    super(props);
-    this.searchBarElement = React.createRef();
-  }
-  state: PokemonElementState = {
-    pokemons: [],
-    loading: false,
-  };
+  useEffect(() => {
+    const savedInputValue = localStorage.getItem("search");
+    if (savedInputValue) {
+      setInputValue(savedInputValue);
+      handleSearch(inputValue);
+    } else handleSearch("");
+  }, [inputValue, setInputValue]);
 
-  componentDidMount() {
-    const inputValue = localStorage.getItem("search");
-    if (inputValue) {
-      this.searchBarElement.current?.setState({ inputValue });
-      this.handleSearch(inputValue);
-    } else this.handleSearch("");
-  }
-
-  handleSearch = (name: string) => {
-    this.setState({ loading: true });
-
+  const handleSearch = (name: string) => {
+    setLoading(true);
     getPokemonDataByName(name).then((data) => {
-      this.setState({
-        pokemons: data.filter((pokemon) => pokemon !== undefined),
-        loading: false,
-      });
+      setPokemons(data.filter((pokemon) => pokemon !== undefined));
+      setLoading(false);
     });
 
     localStorage.setItem("search", name);
   };
 
-  render() {
-    if (this.state.loading) {
-      return (
-        <>
-          <SearchBar ref={this.searchBarElement} search={this.handleSearch} />
-          <Loader />
-        </>
-      );
-    } else
-      return (
-        <>
-          <SearchBar ref={this.searchBarElement} search={this.handleSearch} />
-          <SearchResults pokemons={this.state.pokemons} />
-        </>
-      );
-  }
+  if (loading) {
+    return (
+      <>
+        <SearchBar
+          search={handleSearch}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+        <Loader />
+      </>
+    );
+  } else
+    return (
+      <>
+        <SearchBar
+          search={handleSearch}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+        <SearchResults pokemons={pokemons} />
+      </>
+    );
 }
