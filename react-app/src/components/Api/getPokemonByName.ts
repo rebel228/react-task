@@ -37,7 +37,7 @@ async function getPokemonByName(
     name: response.name,
     key: response.id,
     imgUrl: response.sprites.front_default,
-    descr: descr[0].flavor_text,
+    descr: descr[0]?.flavor_text || "",
   };
 }
 
