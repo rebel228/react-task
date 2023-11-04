@@ -1,4 +1,4 @@
-import { PokemonClient, NamedAPIResourceList } from "pokenode-ts";
+import { PokemonClient, NamedAPIResourceList, Pokemon } from "pokenode-ts";
 import { PokemonCardData } from "../../types";
 
 const api = new PokemonClient();
@@ -12,6 +12,18 @@ export default async function getPokemonDataByName(
   } else return await getPokemonList();
 }
 
+async function getPokemonById(
+  id: number,
+): Promise<PokemonCardData | undefined> {
+  const response = await api
+    .getPokemonById(id)
+    .then((data) => data)
+    .catch((error) => console.log(error));
+
+  if (!response) return;
+  return addFlavourData(response);
+}
+
 async function getPokemonByName(
   name: string,
 ): Promise<PokemonCardData | undefined> {
@@ -21,9 +33,14 @@ async function getPokemonByName(
     .catch((error) => console.log(error));
 
   if (!response) return;
+  return addFlavourData(response);
+}
 
+async function addFlavourData(
+  response: Pokemon,
+): Promise<PokemonCardData | undefined> {
   const result = await api
-    .getPokemonSpeciesById(response.id)
+    .getPokemonSpeciesByName(response.species.name)
     .then((data) => data)
     .catch((error) => console.log(error));
 
@@ -32,7 +49,6 @@ async function getPokemonByName(
   const descr = result.flavor_text_entries.filter(
     (entry) => entry.language.name === "en",
   );
-
   return {
     name: response.name,
     key: response.id,
@@ -52,7 +68,8 @@ async function getPokemonList(): Promise<(PokemonCardData | undefined)[]> {
   if (!response) return [];
 
   for (const pokemon of response.results) {
-    const promise = getPokemonByName(pokemon.name);
+    const id = Number(pokemon.url.split("/").slice(-2, -1)[0]);
+    const promise = getPokemonById(id);
     promises.push(promise);
   }
 
