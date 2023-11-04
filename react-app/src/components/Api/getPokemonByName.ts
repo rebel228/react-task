@@ -23,7 +23,7 @@ async function getPokemonByName(
   if (!response) return;
 
   const result = await api
-    .getPokemonSpeciesByName(response.name)
+    .getPokemonSpeciesById(response.id)
     .then((data) => data)
     .catch((error) => console.log(error));
 
