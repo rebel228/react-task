@@ -3,7 +3,7 @@ import {
   useLoaderData,
   useNavigate,
 } from "react-router-dom";
-import "./PokemonDetails.scss";
+import "./pokemonDetails.scss";
 import getPokemonById from "../../Api/getPokemonById";
 import { Pokemon } from "pokenode-ts";
 import { upperFirstLetter } from "../utils";
