@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SearchBar from "./SearchBar/SearchBar";
-import "./PokemonSearch.scss";
+import "./pokemonSearch.scss";
 import Loader from "../Loader/Loader";
 import {
   Outlet,

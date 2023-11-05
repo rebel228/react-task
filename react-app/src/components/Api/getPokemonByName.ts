@@ -34,6 +34,7 @@ async function getPokemonByName(
     .then((data) => data)
     .catch((error) => console.log(error));
 
+  console.log(response);
   if (!response) return;
   return addFlavourData(response);
 }

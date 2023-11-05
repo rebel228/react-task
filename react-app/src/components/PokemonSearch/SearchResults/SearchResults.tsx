@@ -3,6 +3,7 @@ import {
   useLoaderData,
   LoaderFunctionArgs,
   useNavigate,
+  Outlet,
 } from "react-router-dom";
 import PokemonCard from "../PokemonCard/PokemonCard";
 import getPokemonDataByName from "../../Api/getPokemonByName";
@@ -22,6 +23,7 @@ export default function SearchResults() {
   const { pokemons } = useLoaderData() as { pokemons: PokemonDataResponse };
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+  const isShowingDetails = queryParams.has("details");
 
   const handlePrev = () => {
     if (!pokemons.prev) return;
@@ -46,6 +48,11 @@ export default function SearchResults() {
     navigate({ search: queryParams.toString() });
   };
 
+  const closeDetails = () => {
+    queryParams.delete("details");
+    navigate({ search: queryParams.toString() });
+  };
+
   const getQuerryParamsFromUrl = (url: string) => {
     const params = new URLSearchParams(url.split("?")[1]);
     const limit = params.get("limit");
@@ -55,31 +62,37 @@ export default function SearchResults() {
   };
 
   return (
-    <div className="search-results">
-      {pokemons.prev ? (
-        <button onClick={handlePrev}>&lt;</button>
-      ) : (
-        <button className="disabled">&lt;</button>
-      )}
-      <div className="search-results__container">
-        {pokemons.data.map((pokemon) => {
-          if (pokemon)
-            return (
-              <PokemonCard
-                key={pokemon.key}
-                name={pokemon.name}
-                imgUrl={pokemon.imgUrl}
-                descr={pokemon.descr}
-                onPress={() => openDetails(pokemon.key)}
-              />
-            );
-        })}
+    <div className="pokemon-section">
+      <div
+        className="search-results"
+        onClick={isShowingDetails ? closeDetails : undefined}
+      >
+        {pokemons.prev ? (
+          <button onClick={handlePrev}>&lt;</button>
+        ) : (
+          <button className="disabled">&lt;</button>
+        )}
+        <div className="search-results__container">
+          {pokemons.data.map((pokemon) => {
+            if (pokemon)
+              return (
+                <PokemonCard
+                  key={pokemon.key}
+                  name={pokemon.name}
+                  imgUrl={pokemon.imgUrl}
+                  descr={pokemon.descr}
+                  onPress={() => openDetails(pokemon.key)}
+                />
+              );
+          })}
+        </div>
+        {pokemons.next ? (
+          <button onClick={handleNext}>&gt;</button>
+        ) : (
+          <button className="disabled">&gt;</button>
+        )}
       </div>
-      {pokemons.next ? (
-        <button onClick={handleNext}>&gt;</button>
-      ) : (
-        <button className="disabled">&gt;</button>
-      )}
+      <Outlet />
     </div>
   );
 }

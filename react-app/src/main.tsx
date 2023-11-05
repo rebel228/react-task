@@ -6,6 +6,9 @@ import SearchResults, {
   pokemonsLoader,
 } from "./components/PokemonSearch/SearchResults/SearchResults";
 import App from "./App";
+import PokemonDatails, {
+  pokemonDetailsLoader,
+} from "./components/PokemonSearch/PokemonDetails/PokemonDetails";
 
 export const DEFAULT_PATH = "/react-task/react-routing";
 
@@ -18,6 +21,13 @@ const router = createBrowserRouter([
         path: `${DEFAULT_PATH}/`,
         element: <SearchResults />,
         loader: pokemonsLoader,
+        children: [
+          {
+            path: `${DEFAULT_PATH}/`,
+            element: <PokemonDatails />,
+            loader: pokemonDetailsLoader,
+          },
+        ],
       },
     ],
   },
