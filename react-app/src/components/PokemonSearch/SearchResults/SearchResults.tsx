@@ -45,7 +45,7 @@ export default function SearchResults() {
 
   const openDetails = (key: number) => {
     navigate({
-      pathname: `${DEFAULT_PATH}/details/${key}`,
+      pathname: `${DEFAULT_PATH}details/${key}`,
       search: queryParams.toString(),
     });
   };

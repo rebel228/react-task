@@ -10,7 +10,7 @@ import PokemonDatails, {
   pokemonDetailsLoader,
 } from "./components/PokemonSearch/PokemonDetails/PokemonDetails";
 
-export const DEFAULT_PATH = "/react-task/react-routing";
+export const DEFAULT_PATH = "/";
 
 const router = createBrowserRouter([
   {
