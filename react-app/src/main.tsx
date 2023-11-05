@@ -13,10 +13,9 @@ const router = createBrowserRouter([
   {
     path: DEFAULT_PATH,
     element: <App />,
-    loader: pokemonsLoader,
     children: [
       {
-        path: `${DEFAULT_PATH}/pokemons/`,
+        path: `${DEFAULT_PATH}/`,
         element: <SearchResults />,
         loader: pokemonsLoader,
       },
