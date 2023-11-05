@@ -87,6 +87,7 @@ export default function SearchResults() {
                 />
               );
           })}
+          {pokemons.data.every((pokemon) => !pokemon) && <h3>Nothing found</h3>}
         </div>
         {pokemons.next ? (
           <button onClick={handleNext}>&gt;</button>
