@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import "./PokemonSearch.scss";
 import Loader from "../Loader/Loader";
@@ -19,11 +19,6 @@ export default function PokemonsSearch() {
   const navigation = useNavigation();
   const queryParams = new URLSearchParams(location.search);
 
-  useEffect(() => {
-    console.log("useEffect");
-    console.log(location);
-  }, [location]);
-
   const handleSearch = (name: string) => {
     queryParams.set("search", name);
     navigate({ search: queryParams.toString() });
@@ -31,7 +26,9 @@ export default function PokemonsSearch() {
   };
 
   const setItemsAmount = (amount: number) => {
-    console.log(amount);
+    queryParams.set("limit", amount.toString());
+    queryParams.set("offset", "0");
+    navigate({ search: queryParams.toString() });
   };
 
   return (
@@ -44,21 +41,21 @@ export default function PokemonsSearch() {
         />
         <div className="amount-control">
           {navigation.state === "loading" ? (
-            <button className="abount-btn inactive">10</button>
+            <button className="abount-btn disabled">10</button>
           ) : (
             <button className="abount-btn" onClick={() => setItemsAmount(10)}>
               10
             </button>
           )}
           {navigation.state === "loading" ? (
-            <button className="abount-btn inactive">20</button>
+            <button className="abount-btn disabled">20</button>
           ) : (
             <button className="abount-btn" onClick={() => setItemsAmount(20)}>
               20
             </button>
           )}
           {navigation.state === "loading" ? (
-            <button className="abount-btn inactive">50</button>
+            <button className="abount-btn disabled">50</button>
           ) : (
             <button className="abount-btn" onClick={() => setItemsAmount(50)}>
               50

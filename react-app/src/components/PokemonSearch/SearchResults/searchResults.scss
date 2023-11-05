@@ -1,6 +1,7 @@
 .search-results {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  width: calc(100% - 30px);
   gap: 15px;
 }
 
