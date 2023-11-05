@@ -2,12 +2,13 @@
   display: flex;
   justify-content: center;
   gap: 15px;
-  margin: 20px 0;
 }
 
 .search-results__container {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
   gap: 15px;
 }

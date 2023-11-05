@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import SearchBar from "./SearchBar/SearchBar";
-import "./PokemonSearch.css";
+import "./PokemonSearch.scss";
 import Loader from "../Loader/Loader";
 import {
   Outlet,
@@ -36,34 +36,37 @@ export default function PokemonsSearch() {
 
   return (
     <>
-      <SearchBar
-        search={handleSearch}
-        inputValue={inputValue}
-        setInputValue={setInputValue}
-      />
-      <div className="amount-control">
-        {navigation.state === "loading" ? (
-          <button className="abount-btn inactive">10</button>
-        ) : (
-          <button className="abount-btn" onClick={() => setItemsAmount(10)}>
-            10
-          </button>
-        )}
-        {navigation.state === "loading" ? (
-          <button className="abount-btn inactive">20</button>
-        ) : (
-          <button className="abount-btn" onClick={() => setItemsAmount(20)}>
-            20
-          </button>
-        )}
-        {navigation.state === "loading" ? (
-          <button className="abount-btn inactive">50</button>
-        ) : (
-          <button className="abount-btn" onClick={() => setItemsAmount(50)}>
-            50
-          </button>
-        )}
+      <div className="search-contols">
+        <SearchBar
+          search={handleSearch}
+          inputValue={inputValue}
+          setInputValue={setInputValue}
+        />
+        <div className="amount-control">
+          {navigation.state === "loading" ? (
+            <button className="abount-btn inactive">10</button>
+          ) : (
+            <button className="abount-btn" onClick={() => setItemsAmount(10)}>
+              10
+            </button>
+          )}
+          {navigation.state === "loading" ? (
+            <button className="abount-btn inactive">20</button>
+          ) : (
+            <button className="abount-btn" onClick={() => setItemsAmount(20)}>
+              20
+            </button>
+          )}
+          {navigation.state === "loading" ? (
+            <button className="abount-btn inactive">50</button>
+          ) : (
+            <button className="abount-btn" onClick={() => setItemsAmount(50)}>
+              50
+            </button>
+          )}
+        </div>
       </div>
+
       {navigation.state === "loading" && <Loader />}
       {!(navigation.state === "loading") && <Outlet />}
     </>
