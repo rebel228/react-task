@@ -4,7 +4,7 @@ import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import SearchResults, {
   pokemonsLoader,
-} from "./components/PokemonSearch/searchResults";
+} from "./components/PokemonSearch/SearchResults/SearchResults";
 import App from "./App";
 
 export const DEFAULT_PATH = "/react-task/react-routing";

@@ -1,11 +1,12 @@
-import { PokemonDataResponse } from "../../types";
+import { PokemonDataResponse } from "../../../types";
 import {
   useLoaderData,
   LoaderFunctionArgs,
   useNavigate,
 } from "react-router-dom";
-import PokemonCard from "./pokemonCard";
-import getPokemonDataByName from "../Api/getPokemonByName";
+import PokemonCard from "../PokemonCard/PokemonCard";
+import getPokemonDataByName from "../../Api/getPokemonByName";
+import "./searchResults.scss";
 
 export const pokemonsLoader = async ({ request }: LoaderFunctionArgs) => {
   const queryParams = new URL(request.url).searchParams;
@@ -51,7 +52,7 @@ export default function SearchResults() {
   return (
     <div className="search-results">
       {pokemons.prev && <button onClick={handlePrev}>&lt;</button>}
-      <div className="result-container">
+      <div className="search-results__container">
         {pokemons.data.map((pokemon) => {
           if (pokemon)
             return (

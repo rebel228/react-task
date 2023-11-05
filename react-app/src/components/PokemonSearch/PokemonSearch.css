@@ -1,43 +1,5 @@
-.search-results {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.pokemon {
-  width: 320px;
-  min-height: 270px;
-  background-color: rgb(184, 218, 218);
-  border-radius: 18px;
-}
-
-.pokemon__title,
-.pokemon__text {
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  margin: 10px 0;
-}
-
-.search {
-  display: flex;
-  gap: 10px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-
-.search__input {
-  border-radius: 8px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 18px;
-}
-
-.amout-control {
+.amount-control {
   display: flex;
   justify-content: center;
   gap: 20px;
-}
-
-.abount-btn.inactive:hover {
-  background-color: #f9f9f9;
 }

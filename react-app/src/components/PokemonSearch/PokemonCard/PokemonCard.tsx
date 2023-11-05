@@ -1,4 +1,5 @@
-import { PokemonCardData } from "../../types";
+import { PokemonCardData } from "../../../types";
+import "./PokemonCard.scss";
 
 export default function PokemonCard({ name, imgUrl, descr }: PokemonCardData) {
   function upperFirstLetter(string: string): string {

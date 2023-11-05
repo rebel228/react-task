@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import SearchBar from "./searchBar";
+import SearchBar from "./SearchBar/SearchBar";
 import "./PokemonSearch.css";
 import Loader from "../Loader/Loader";
 import {
@@ -41,7 +41,7 @@ export default function PokemonsSearch() {
         inputValue={inputValue}
         setInputValue={setInputValue}
       />
-      <div className="amout-control">
+      <div className="amount-control">
         {navigation.state === "loading" ? (
           <button className="abount-btn inactive">10</button>
         ) : (

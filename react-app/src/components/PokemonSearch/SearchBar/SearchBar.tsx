@@ -1,5 +1,6 @@
 import { ChangeEvent, useRef } from "react";
-import ErrorButton from "../ErrorButton/ErrorButton";
+import ErrorButton from "../../ErrorButton/ErrorButton";
+import "./searchBar.scss";
 
 export default function SearchBar({
   search,
@@ -20,7 +21,7 @@ export default function SearchBar({
   };
 
   return (
-    <div className="search">
+    <div className="search-bar">
       <input
         type="text"
         className="search__input"
