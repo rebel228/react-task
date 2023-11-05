@@ -40,7 +40,6 @@ export default function SearchResults() {
     if (!params.offset || !params.limit) return;
     queryParams.set("offset", params.offset);
     queryParams.set("limit", params.limit);
-    console.log(queryParams.get("details"));
     navigate({ search: queryParams.toString() });
   };
 
