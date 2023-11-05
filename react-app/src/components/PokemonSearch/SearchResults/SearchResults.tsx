@@ -4,6 +4,7 @@ import {
   LoaderFunctionArgs,
   useNavigate,
   Outlet,
+  useMatch,
 } from "react-router-dom";
 import PokemonCard from "../PokemonCard/PokemonCard";
 import getPokemonDataByName from "../../Api/getPokemonByName";
@@ -23,7 +24,7 @@ export default function SearchResults() {
   const { pokemons } = useLoaderData() as { pokemons: PokemonDataResponse };
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const isShowingDetails = queryParams.has("details");
+  const isShowingDetails = useMatch("details/:id");
 
   const handlePrev = () => {
     if (!pokemons.prev) return;
