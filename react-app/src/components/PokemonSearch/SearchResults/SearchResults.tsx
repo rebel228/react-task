@@ -51,7 +51,11 @@ export default function SearchResults() {
 
   return (
     <div className="search-results">
-      {pokemons.prev && <button onClick={handlePrev}>&lt;</button>}
+      {pokemons.prev ? (
+        <button onClick={handlePrev}>&lt;</button>
+      ) : (
+        <button className="disabled">&lt;</button>
+      )}
       <div className="search-results__container">
         {pokemons.data.map((pokemon) => {
           if (pokemon)
@@ -65,7 +69,11 @@ export default function SearchResults() {
             );
         })}
       </div>
-      {pokemons.next && <button onClick={handleNext}>&gt;</button>}
+      {pokemons.next ? (
+        <button onClick={handleNext}>&gt;</button>
+      ) : (
+        <button className="disabled">&gt;</button>
+      )}
     </div>
   );
 }
