@@ -41,6 +41,11 @@ export default function SearchResults() {
     navigate({ search: queryParams.toString() });
   };
 
+  const openDetails = (key: number) => {
+    queryParams.set("details", key.toString());
+    navigate({ search: queryParams.toString() });
+  };
+
   const getQuerryParamsFromUrl = (url: string) => {
     const params = new URLSearchParams(url.split("?")[1]);
     const limit = params.get("limit");
@@ -65,6 +70,7 @@ export default function SearchResults() {
                 name={pokemon.name}
                 imgUrl={pokemon.imgUrl}
                 descr={pokemon.descr}
+                onPress={() => openDetails(pokemon.key)}
               />
             );
         })}
