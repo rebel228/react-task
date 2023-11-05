@@ -7,12 +7,10 @@ import "./PokemonDetails.scss";
 import getPokemonById from "../../Api/getPokemonById";
 import { Pokemon } from "pokenode-ts";
 import { upperFirstLetter } from "../utils";
+import { DEFAULT_PATH } from "../../../main";
 
-export const pokemonDetailsLoader = async ({ request }: LoaderFunctionArgs) => {
-  const queryParams = new URL(request.url).searchParams;
-  const pokemodId = queryParams.get("details");
-  const pokemon = await getPokemonById(Number(pokemodId));
-  console.log(pokemon);
+export const pokemonDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
+  const pokemon = await getPokemonById(Number(params.id));
   return { pokemon };
 };
 
@@ -22,8 +20,7 @@ export default function PokemonDatails() {
   const queryParams = new URLSearchParams(location.search);
 
   const closeDetails = () => {
-    queryParams.delete("details");
-    navigate({ search: queryParams.toString() });
+    navigate({ pathname: DEFAULT_PATH, search: queryParams.toString() });
   };
 
   return (
@@ -76,10 +73,10 @@ export default function PokemonDatails() {
             </span>
           </div>
           <h3 className="pokemon-details__title">Abilities</h3>
-          {pokemon.abilities.map((ability) => {
+          {pokemon.abilities.map((ability, index) => {
             if (ability)
               return (
-                <p className="pokemon__ability">
+                <p className="pokemon__ability" key={index}>
                   {upperFirstLetter(ability.ability.name)}
                 </p>
               );

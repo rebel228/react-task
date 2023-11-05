@@ -8,6 +8,7 @@ import {
 import PokemonCard from "../PokemonCard/PokemonCard";
 import getPokemonDataByName from "../../Api/getPokemonByName";
 import "./searchResults.scss";
+import { DEFAULT_PATH } from "../../../main";
 
 export const pokemonsLoader = async ({ request }: LoaderFunctionArgs) => {
   const queryParams = new URL(request.url).searchParams;
@@ -15,7 +16,6 @@ export const pokemonsLoader = async ({ request }: LoaderFunctionArgs) => {
   const limit = queryParams.get("limit");
   const offset = queryParams.get("offset");
   const pokemons = await getPokemonDataByName(search || "", offset, limit);
-  console.log(pokemons);
   return { pokemons };
 };
 
@@ -40,17 +40,19 @@ export default function SearchResults() {
     if (!params.offset || !params.limit) return;
     queryParams.set("offset", params.offset);
     queryParams.set("limit", params.limit);
+    console.log(queryParams.get("details"));
     navigate({ search: queryParams.toString() });
   };
 
   const openDetails = (key: number) => {
-    queryParams.set("details", key.toString());
-    navigate({ search: queryParams.toString() });
+    navigate({
+      pathname: `${DEFAULT_PATH}/details/${key}`,
+      search: queryParams.toString(),
+    });
   };
 
   const closeDetails = () => {
-    queryParams.delete("details");
-    navigate({ search: queryParams.toString() });
+    navigate({ pathname: DEFAULT_PATH, search: queryParams.toString() });
   };
 
   const getQuerryParamsFromUrl = (url: string) => {

@@ -34,7 +34,6 @@ async function getPokemonByName(
     .then((data) => data)
     .catch((error) => console.log(error));
 
-  console.log(response);
   if (!response) return;
   return addFlavourData(response);
 }
@@ -66,10 +65,7 @@ async function getPokemonList(
 ): Promise<PokemonDataResponse> {
   const response: NamedAPIResourceList | void = await api
     .listPokemons(Number(offset), Number(limit))
-    .then((data) => {
-      console.log(data);
-      return data;
-    })
+    .then((data) => data)
     .catch((error) => console.log(error));
   const promises: Promise<PokemonCardData | undefined>[] = [];
 

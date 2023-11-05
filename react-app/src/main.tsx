@@ -23,7 +23,7 @@ const router = createBrowserRouter([
         loader: pokemonsLoader,
         children: [
           {
-            path: `${DEFAULT_PATH}/`,
+            path: `${DEFAULT_PATH}/details/:id`,
             element: <PokemonDatails />,
             loader: pokemonDetailsLoader,
           },

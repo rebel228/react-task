@@ -15,7 +15,6 @@ export default function SearchBar({
 
   const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const lowerCase = event.target.value.toLocaleLowerCase();
-    console.log(lowerCase);
     if (lowerCase) setInputValue(lowerCase);
     else setInputValue("");
   };
