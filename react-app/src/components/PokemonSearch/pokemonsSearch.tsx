@@ -1,55 +1,71 @@
 import { useEffect, useState } from "react";
-import SearchResults from "./searchResults";
 import SearchBar from "./searchBar";
-import getPokemonDataByName from "../Api/getPokemonByName";
 import "./PokemonSearch.css";
 import Loader from "../Loader/Loader";
-import { PokemonCardData } from "../../types";
+import {
+  Outlet,
+  useLocation,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 
 export default function PokemonsSearch() {
-  const initialPokemons: (PokemonCardData | undefined)[] = [];
-  const [pokemons, setPokemons] = useState(initialPokemons);
-  const [loading, setLoading] = useState(true);
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState(
+    localStorage.getItem("search") || "",
+  );
+
+  const location = useLocation();
+  const navigate = useNavigate();
+  const navigation = useNavigation();
+  const queryParams = new URLSearchParams(location.search);
 
   useEffect(() => {
-    const savedInputValue = localStorage.getItem("search");
-    if (savedInputValue) {
-      setInputValue(savedInputValue);
-      handleSearch(inputValue);
-    } else handleSearch("");
-  }, [inputValue, setInputValue]);
+    console.log("useEffect");
+    console.log(location);
+  }, [location]);
 
   const handleSearch = (name: string) => {
-    setLoading(true);
-    getPokemonDataByName(name).then((data) => {
-      setPokemons(data.filter((pokemon) => pokemon !== undefined));
-      setLoading(false);
-    });
-
+    queryParams.set("search", name);
+    navigate({ search: queryParams.toString() });
     localStorage.setItem("search", name);
   };
 
-  if (loading) {
-    return (
-      <>
-        <SearchBar
-          search={handleSearch}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-        />
-        <Loader />
-      </>
-    );
-  } else
-    return (
-      <>
-        <SearchBar
-          search={handleSearch}
-          inputValue={inputValue}
-          setInputValue={setInputValue}
-        />
-        <SearchResults pokemons={pokemons} />
-      </>
-    );
+  const setItemsAmount = (amount: number) => {
+    console.log(amount);
+  };
+
+  return (
+    <>
+      <SearchBar
+        search={handleSearch}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+      />
+      <div className="amout-control">
+        {navigation.state === "loading" ? (
+          <button className="abount-btn inactive">10</button>
+        ) : (
+          <button className="abount-btn" onClick={() => setItemsAmount(10)}>
+            10
+          </button>
+        )}
+        {navigation.state === "loading" ? (
+          <button className="abount-btn inactive">20</button>
+        ) : (
+          <button className="abount-btn" onClick={() => setItemsAmount(20)}>
+            20
+          </button>
+        )}
+        {navigation.state === "loading" ? (
+          <button className="abount-btn inactive">50</button>
+        ) : (
+          <button className="abount-btn" onClick={() => setItemsAmount(50)}>
+            50
+          </button>
+        )}
+      </div>
+      {navigation.state === "loading" && <Loader />}
+      {!(navigation.state === "loading") && <Outlet />}
+    </>
+  );
 }

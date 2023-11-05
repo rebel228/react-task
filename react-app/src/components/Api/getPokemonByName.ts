@@ -1,15 +1,17 @@
 import { PokemonClient, NamedAPIResourceList, Pokemon } from "pokenode-ts";
-import { PokemonCardData } from "../../types";
+import { PokemonCardData, PokemonDataResponse } from "../../types";
 
 const api = new PokemonClient();
 
 export default async function getPokemonDataByName(
   name: string,
-): Promise<(PokemonCardData | undefined)[]> {
+  offset?: string | null,
+  limit?: string | null,
+): Promise<PokemonDataResponse> {
   if (name) {
     const data = await getPokemonByName(name);
-    return [data];
-  } else return await getPokemonList();
+    return { data: [data] };
+  } else return await getPokemonList(offset, limit);
 }
 
 async function getPokemonById(
@@ -57,21 +59,29 @@ async function addFlavourData(
   };
 }
 
-async function getPokemonList(): Promise<(PokemonCardData | undefined)[]> {
+async function getPokemonList(
+  offset?: string | null,
+  limit?: string | null,
+): Promise<PokemonDataResponse> {
   const response: NamedAPIResourceList | void = await api
-    .listPokemons()
-    .then((data) => data)
+    .listPokemons(Number(offset), Number(limit))
+    .then((data) => {
+      console.log(data);
+      return data;
+    })
     .catch((error) => console.log(error));
-
   const promises: Promise<PokemonCardData | undefined>[] = [];
 
-  if (!response) return [];
+  if (!response) return { data: [] };
 
   for (const pokemon of response.results) {
     const id = Number(pokemon.url.split("/").slice(-2, -1)[0]);
     const promise = getPokemonById(id);
     promises.push(promise);
   }
-
-  return Promise.all(promises);
+  return {
+    data: await Promise.all(promises).then((data) => data),
+    next: response.next,
+    prev: response.previous,
+  };
 }

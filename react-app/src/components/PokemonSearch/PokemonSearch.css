@@ -31,3 +31,13 @@
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 18px;
 }
+
+.amout-control {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.abount-btn.inactive:hover {
+  background-color: #f9f9f9;
+}
