@@ -1,6 +1,6 @@
 import { PokemonCardData } from "../../../types";
 import { cleanDescription, upperFirstLetter } from "../utils";
-import "./pokemonCard.scss";
+import "./PokemonCard.scss";
 
 interface PokemonCardProps extends PokemonCardData {
   onPress?: () => void;
