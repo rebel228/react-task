@@ -21,6 +21,7 @@ export default function PokemonsSearch() {
 
   const handleSearch = (name: string) => {
     queryParams.set("search", name);
+    queryParams.set("offset", "0");
     navigate({ search: queryParams.toString() });
     localStorage.setItem("search", name);
   };
