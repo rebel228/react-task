@@ -35,7 +35,7 @@ export default function PokemonsSearch() {
   const getPage = () => {
     const limit = Number(queryParams.get("limit")) || 20;
     const offset = Number(queryParams.get("offset")) || 0;
-    return offset / limit + 1 || 1;
+    return Math.ceil(offset / limit) + 1 || 1;
   };
 
   return (
