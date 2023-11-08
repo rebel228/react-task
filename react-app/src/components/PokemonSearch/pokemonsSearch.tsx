@@ -31,6 +31,12 @@ export default function PokemonsSearch() {
     navigate({ search: queryParams.toString() });
   };
 
+  const getPage = () => {
+    const limit = Number(queryParams.get("limit")) || 20;
+    const offset = Number(queryParams.get("offset")) || 0;
+    return offset / limit + 1 || 1;
+  };
+
   return (
     <>
       <div className="search-contols">
@@ -40,6 +46,7 @@ export default function PokemonsSearch() {
           setInputValue={setInputValue}
         />
         <div className="amount-control">
+          <span className="pagenumber-text">{`Page: ${getPage()}`}</span>
           {navigation.state === "loading" ? (
             <button className="abount-btn disabled">10</button>
           ) : (
