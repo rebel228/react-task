@@ -30,7 +30,7 @@ describe("Testing card list results", () => {
     const { container } = component;
     expect(container.getElementsByClassName("pokemon").length).toBe(3);
   });
-  it("Verify that the component renders three cards", () => {
+  it("Verify that the 'Nothing found' message is present", () => {
     customRender(noPokemons);
     expect(screen.queryByText("Nothing found")).toBeTruthy();
   });

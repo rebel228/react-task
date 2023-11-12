@@ -30,7 +30,7 @@ export default function PokemonsSearch() {
   const { fetchedPokemons } = useLoaderData() as {
     fetchedPokemons: PokemonDataResponse;
   };
-  const { pokemons, setPokemons } = useContext(PokemonSearchContext);
+  const { setPokemons } = useContext(PokemonSearchContext);
   const location = useLocation();
   const navigate = useNavigate();
   const navigation = useNavigation();
@@ -38,7 +38,6 @@ export default function PokemonsSearch() {
 
   useEffect(() => {
     setPokemons(fetchedPokemons);
-    console.log(pokemons);
   });
 
   const handleSearch = (name: string) => {
