@@ -50,16 +50,16 @@ export default function SearchResults() {
 
   return (
     <div className="pokemon-section">
-      <div
-        className="search-results"
-        onClick={isShowingDetails ? closeDetails : undefined}
-      >
+      <div className="search-results">
         {pokemons?.prev ? (
           <button onClick={handlePrev}>&lt;</button>
         ) : (
           <button className="disabled">&lt;</button>
         )}
-        <div className="search-results__container">
+        <div
+          className="search-results__container"
+          onClick={isShowingDetails ? closeDetails : undefined}
+        >
           {pokemons?.data.map((pokemon) => {
             if (pokemon)
               return (
