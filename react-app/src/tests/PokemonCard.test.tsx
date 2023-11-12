@@ -80,11 +80,10 @@ describe("Testing pokemon cards / pokemon details behaviour", () => {
 
 describe("Testing URL and routing", () => {
   it("check if changing the page updates the URL", async () => {
-    const component = customRender(threePokemons);
+    customRender(threePokemons);
     const location = router.state.location;
     const queryParams = new URLSearchParams(location.search);
-    const { container } = component;
-    const prev = container.getElementsByTagName("button")[0];
+    const prev = screen.getByRole("button", { name: "<" });
     fireEvent.click(prev);
     const newQueryParams = new URLSearchParams(location.search);
     waitFor(() => {
