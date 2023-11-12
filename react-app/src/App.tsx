@@ -1,12 +1,15 @@
+import { Outlet } from "react-router-dom";
 import "./App.css";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import PokemonsSearch from "./components/PokemonSearch/pokemonsSearch";
+import { ContentProvider } from "./components/PokemonSearch/Context/Context";
 
 export default function App() {
   return (
     <main>
       <ErrorBoundary>
-        <PokemonsSearch />
+        <ContentProvider>
+          <Outlet />
+        </ContentProvider>
       </ErrorBoundary>
     </main>
   );
