@@ -22,3 +22,7 @@ export const threePokemons: PokemonDataResponse = {
     },
   ],
 };
+
+export const noPokemons: PokemonDataResponse = {
+  data: [undefined],
+};
