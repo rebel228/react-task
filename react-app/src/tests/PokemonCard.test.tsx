@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import SearchResults from "../components/PokemonSearch/SearchResults/SearchResults";
@@ -10,9 +10,8 @@ import { DEFAULT_PATH } from "../constants";
 import PokemonDatails, {
   pokemonDetailsLoader,
 } from "../components/PokemonSearch/PokemonDetails/PokemonDetails";
-import { setupServer } from "msw/node";
 
-const server = setupServer();
+const mockLoader = vi.fn(pokemonDetailsLoader);
 
 const router = createMemoryRouter([
   {
@@ -22,7 +21,7 @@ const router = createMemoryRouter([
       {
         path: `${DEFAULT_PATH}/details/:id`,
         element: <PokemonDatails />,
-        loader: pokemonDetailsLoader,
+        loader: mockLoader,
       },
     ],
   },
@@ -44,19 +43,21 @@ const customRender = (pokemons: PokemonDataResponse) => {
 };
 
 describe("Testing card behaviour", () => {
-  beforeAll(() => server.listen());
   it("Ensure that the card renders the relevant pokemon name", async () => {
     customRender(threePokemons);
     expect(screen.getByText("Bulbasaur")).toBeTruthy();
     expect(screen.getByText("Ivysaur")).toBeTruthy();
     expect(screen.getByText("Charmander")).toBeTruthy();
   });
-  it("", async () => {
+  it("Check is clicking on the card opened details", async () => {
     customRender(threePokemons);
     const card = screen.getByText("Bulbasaur");
     fireEvent(card, new MouseEvent("click", { bubbles: true }));
-    expect((await screen.findAllByText("66").then((data) => data)).length).toBe(
-      1,
-    );
+    expect(
+      (await screen.findAllByText("Abilities").then((data) => data)).length,
+    ).toBe(1);
+  });
+  it("Expected an API call to be made", async () => {
+    expect(mockLoader).toHaveBeenCalled();
   });
 });
