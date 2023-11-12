@@ -1,11 +1,11 @@
 import { ReactNode, createContext, useState } from "react";
 import { PokemonDataResponse } from "../../../types";
 
-type ContentProviderProps = {
+export type ContentProviderProps = {
   children: ReactNode;
 };
 
-interface PokemonContextProps {
+export interface PokemonContextProps {
   pokemons: PokemonDataResponse | undefined;
   setPokemons: (pokemons: PokemonDataResponse) => void;
   searchValue: string;

@@ -1,9 +1,9 @@
 import { useNavigate, Outlet, useMatch } from "react-router-dom";
 import PokemonCard from "../PokemonCard/PokemonCard";
 import "./searchResults.scss";
-import { DEFAULT_PATH } from "../../../main";
 import { useContext } from "react";
 import { PokemonSearchContext } from "../Context/Context";
+import { DEFAULT_PATH } from "../../../constants";
 
 export default function SearchResults() {
   const { pokemons } = useContext(PokemonSearchContext);

@@ -7,7 +7,7 @@ import "./pokemonDetails.scss";
 import getPokemonById from "../../Api/getPokemonById";
 import { Pokemon } from "pokenode-ts";
 import { upperFirstLetter } from "../utils";
-import { DEFAULT_PATH } from "../../../main";
+import { DEFAULT_PATH } from "../../../constants";
 
 export const pokemonDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
   const pokemon = await getPokemonById(Number(params.id));

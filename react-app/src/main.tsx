@@ -9,8 +9,7 @@ import PokemonsSearch, {
 import PokemonDatails, {
   pokemonDetailsLoader,
 } from "./components/PokemonSearch/PokemonDetails/PokemonDetails";
-
-export const DEFAULT_PATH = "/";
+import { DEFAULT_PATH } from "./constants";
 
 const router = createBrowserRouter([
   {
