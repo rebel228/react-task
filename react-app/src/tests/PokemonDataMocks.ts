@@ -16,7 +16,7 @@ export const threePokemons: PokemonDataResponse = {
     },
     {
       name: "charmander",
-      key: 3,
+      key: 4,
       imgUrl: "testurl",
       descr: "teststring",
     },
