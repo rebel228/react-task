@@ -21,6 +21,8 @@ export const threePokemons: PokemonDataResponse = {
       descr: "teststring",
     },
   ],
+  next: "https://pokeapi.co/api/v2/pokemon?offset=50&limit=10",
+  prev: "https://pokeapi.co/api/v2/pokemon?offset=30&limit=10",
 };
 
 export const noPokemons: PokemonDataResponse = {

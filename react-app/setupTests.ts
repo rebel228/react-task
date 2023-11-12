@@ -7,6 +7,7 @@ const server = setupServer(
   http.get("https://pokeapi.co/api/v2/pokemon/1", () => {
     return HttpResponse.json({
       name: "Bulbasaur",
+      species: { name: "bulbasaur" },
       sprites: { front_default: "" },
       height: "12",
       weight: "12",
