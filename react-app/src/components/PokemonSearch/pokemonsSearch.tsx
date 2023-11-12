@@ -1,7 +1,6 @@
 import { useContext, useEffect } from "react";
 import SearchBar from "./SearchBar/SearchBar";
 import "./PokemonSearch.scss";
-import Loader from "../Loader/Loader";
 import {
   LoaderFunctionArgs,
   useLoaderData,
@@ -90,8 +89,6 @@ export default function PokemonsSearch() {
           )}
         </div>
       </div>
-
-      {navigation.state === "loading" && <Loader />}
       <SearchResults />
     </>
   );
