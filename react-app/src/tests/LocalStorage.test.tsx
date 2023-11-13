@@ -49,4 +49,8 @@ describe("Testing local storage", () => {
     fireEvent.click(search);
     expect(localStorage.getItem("search")).toEqual("New Value");
   });
+  it("component retrieves the value from the local storage upon mounting", () => {
+    customRender(threePokemons, PokemonSearchRouter);
+    expect(localStorage.getItem("search")).toEqual("New Value");
+  });
 });
