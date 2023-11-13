@@ -11,7 +11,7 @@
     "preview": "vite preview",
     "prepare": "cd .. && husky install react-app/.husky",
     "deploy": "npm run build && npx gh-pages -d dist -e react-components",
-    "test": "vitest"
+    "test": "vitest --coverage"
   },
   "dependencies": {
     "axios": "^1.6.0",
