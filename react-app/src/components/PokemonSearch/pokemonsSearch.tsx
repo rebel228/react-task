@@ -65,27 +65,20 @@ export default function PokemonsSearch() {
         <SearchBar search={handleSearch} />
         <div className="amount-control">
           <span className="pagenumber-text">{`Page: ${getPage()}`}</span>
-          {navigation.state === "loading" ? (
-            <button className="abount-btn disabled">10</button>
-          ) : (
-            <button className="abount-btn" onClick={() => setItemsAmount(10)}>
-              10
+          {[10, 20, 50].map((perPage) => (
+            <button
+              key={perPage}
+              disabled={navigation.state === "loading"}
+              className="abount-btn"
+              onClick={
+                navigation.state !== "loading"
+                  ? () => setItemsAmount(perPage)
+                  : undefined
+              }
+            >
+              {perPage}
             </button>
-          )}
-          {navigation.state === "loading" ? (
-            <button className="abount-btn disabled">20</button>
-          ) : (
-            <button className="abount-btn" onClick={() => setItemsAmount(20)}>
-              20
-            </button>
-          )}
-          {navigation.state === "loading" ? (
-            <button className="abount-btn disabled">50</button>
-          ) : (
-            <button className="abount-btn" onClick={() => setItemsAmount(50)}>
-              50
-            </button>
-          )}
+          ))}
         </div>
       </div>
       <SearchResults />
