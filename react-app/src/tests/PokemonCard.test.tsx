@@ -1,46 +1,25 @@
-import { describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { describe, expect, it } from "vitest";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
-import SearchResults from "../components/PokemonSearch/SearchResults/SearchResults";
-import { RouterProvider, createMemoryRouter } from "react-router-dom";
-import { PokemonSearchContext } from "../components/PokemonSearch/Context/Context";
-import { threePokemons } from "./PokemonDataMocks";
-import { PokemonDataResponse } from "../types";
-import { DEFAULT_PATH } from "../constants";
-import PokemonDatails, {
-  pokemonDetailsLoader,
-} from "../components/PokemonSearch/PokemonDetails/PokemonDetails";
+import {
+  customRender,
+  mockLoader,
+  noPokemons,
+  routerMockSearchRes,
+  threePokemons,
+} from "./PokemonDataMocks";
 
-const mockLoader = vi.fn(pokemonDetailsLoader);
-
-const router = createMemoryRouter([
-  {
-    path: DEFAULT_PATH,
-    element: <SearchResults />,
-    children: [
-      {
-        path: `${DEFAULT_PATH}/details/:id`,
-        element: <PokemonDatails />,
-        loader: mockLoader,
-      },
-    ],
-  },
-]);
-
-const customRender = (pokemons: PokemonDataResponse) => {
-  return render(
-    <PokemonSearchContext.Provider
-      value={{
-        pokemons: pokemons,
-        setPokemons: () => {},
-        searchValue: "",
-        setSearchValue: () => {},
-      }}
-    >
-      <RouterProvider router={router} />
-    </PokemonSearchContext.Provider>,
-  );
-};
+describe("Testing card list results", () => {
+  it("Verify that the component renders three cards", () => {
+    const component = customRender(threePokemons);
+    const { container } = component;
+    expect(container.getElementsByClassName("pokemon").length).toBe(3);
+  });
+  it("Verify that the 'Nothing found' message is present", () => {
+    customRender(noPokemons);
+    expect(screen.queryByText("Nothing found")).toBeTruthy();
+  });
+});
 
 describe("Testing pokemon cards / pokemon details behaviour", () => {
   it("Ensure that the card renders the relevant pokemon name", async () => {
@@ -81,13 +60,12 @@ describe("Testing pokemon cards / pokemon details behaviour", () => {
 describe("Testing URL and routing", () => {
   it("check if changing the page updates the URL", async () => {
     customRender(threePokemons);
-    const location = router.state.location;
+    const location = routerMockSearchRes.state.location;
     const queryParams = new URLSearchParams(location.search);
     const prev = screen.getByRole("button", { name: "<" });
     fireEvent.click(prev);
     const newQueryParams = new URLSearchParams(location.search);
     waitFor(() => {
-      console.log(location);
       expect(newQueryParams.get("offset")).toBeTruthy();
       expect(
         queryParams.get("offset") !== newQueryParams.get("offset"),
@@ -96,7 +74,7 @@ describe("Testing URL and routing", () => {
   });
   it("check if 404 page is displayed", async () => {
     customRender(threePokemons);
-    router.state.location.pathname = "/badroute";
+    routerMockSearchRes.state.location.pathname = "/badroute";
     waitFor(() => {
       expect(screen.queryByText("404 Not Found")).toBeTruthy();
     });
