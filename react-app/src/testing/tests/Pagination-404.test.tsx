@@ -45,8 +45,8 @@ describe("Testing URL changes", () => {
 describe("Testing 404 page", () => {
   it("check if 404 page is displayed", async () => {
     customRender();
-    routerMock.state.location.pathname = "/badroute";
-    waitFor(() => {
+    routerMock.navigate("/badroute");
+    await waitFor(() => {
       expect(screen.queryByText("404 Not Found")).toBeTruthy();
     });
   });
