@@ -8,7 +8,7 @@ interface PokemonCardProps {
   id: number;
 }
 
-export default function PokemonCard2(props: PokemonCardProps) {
+export default function PokemonCard(props: PokemonCardProps) {
   const { data: pokemon, isLoading: loadPokemon } =
     pokemonAPI.useGetPokemonByNameQuery(props.id.toString());
 

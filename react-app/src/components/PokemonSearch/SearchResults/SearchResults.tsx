@@ -5,9 +5,8 @@ import { pokemonAPI } from "../../../services/PokemonService";
 import PokemonCard2 from "../PokemonCard/PokemonCard";
 import { useAppSelector } from "../../../hooks/redux";
 import Loader from "../../Loader/Loader";
-import { useEffect } from "react";
 
-export default function SearchResults2() {
+export default function SearchResults() {
   const [, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
@@ -19,7 +18,6 @@ export default function SearchResults2() {
     data: pokemons,
     isError,
     isLoading,
-    isFetching,
   } = search
     ? pokemonAPI.useGetPokemonByNameQuery(search)
     : pokemonAPI.useListPokemonsQuery({
@@ -27,11 +25,6 @@ export default function SearchResults2() {
         offset,
       });
   const isShowingDetails = useMatch("details/:id");
-
-  useEffect(() => {
-    console.log(isLoading);
-    console.log(pokemons);
-  }, [isLoading, pokemons]);
 
   const handlePrev = () => {
     const newPage = (Number(page) - 1).toString();
@@ -43,7 +36,7 @@ export default function SearchResults2() {
     setSearchParams({ page: newPage, limit });
   };
 
-  const openDetails = (key: number) => {
+  const openDetails = async (key: number) => {
     navigate({
       pathname: `${DEFAULT_PATH}details/${key}`,
       search: queryParams.toString(),
@@ -64,7 +57,7 @@ export default function SearchResults2() {
           ) : (
             <button className="disabled">&lt;</button>
           )}
-          {isFetching ? (
+          {isLoading ? (
             <Loader big={true} />
           ) : (
             <div
