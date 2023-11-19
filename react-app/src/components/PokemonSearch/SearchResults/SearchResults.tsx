@@ -17,6 +17,7 @@ export default function SearchResults2() {
   const offset = ((Number(page) - 1) * Number(limit)).toString();
   const {
     data: pokemons,
+    isError,
     isLoading,
     isFetching,
   } = search
@@ -29,7 +30,8 @@ export default function SearchResults2() {
 
   useEffect(() => {
     console.log(isLoading);
-  }, [isLoading]);
+    console.log(pokemons);
+  }, [isLoading, pokemons]);
 
   const handlePrev = () => {
     const newPage = (Number(page) - 1).toString();
@@ -53,9 +55,10 @@ export default function SearchResults2() {
   };
 
   return (
-    <>
-      {pokemons && (
-        <div className="search-results">
+    <div className="search-results">
+      {isError && <h3 className="nothing-title">Nothing found</h3>}
+      {pokemons && !isError && (
+        <>
           {"previous" in pokemons && pokemons?.previous ? (
             <button onClick={handlePrev}>&lt;</button>
           ) : (
@@ -98,8 +101,8 @@ export default function SearchResults2() {
           ) : (
             <button className="disabled">&gt;</button>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 }

@@ -1,6 +1,6 @@
 .search-results {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: calc(100% - 30px);
   height: 100%;
   gap: 15px;
@@ -17,4 +17,8 @@
 
 .details-section {
   align-self: center;
+}
+
+.nothing-title {
+  justify-self: center;
 }
