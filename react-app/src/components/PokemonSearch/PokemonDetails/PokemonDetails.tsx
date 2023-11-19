@@ -4,11 +4,12 @@ import "./pokemonDetails.scss";
 import { upperFirstLetter } from "../utils";
 import { DEFAULT_PATH } from "../../../constants";
 import { pokemonAPI } from "../../../services/PokemonService";
+import Loader from "../../Loader/Loader";
 
 export default function PokemonDatails() {
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-  const { data: pokemon } = pokemonAPI.useGetPokemonByNameQuery(
+  const { data: pokemon, isLoading } = pokemonAPI.useGetPokemonByNameQuery(
     location.pathname.split("/").pop() || "",
   );
   const closeDetails = () => {
@@ -17,6 +18,7 @@ export default function PokemonDatails() {
 
   return (
     <div className="details-section">
+      {isLoading && <Loader />}
       {pokemon && (
         <div className="pokemon-details">
           <div className="close-btn" onClick={closeDetails}></div>
