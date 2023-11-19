@@ -47,36 +47,28 @@ const pokemonList: NamedAPIResourceList = {
 
 const server = setupServer(
   http.get("https://pokeapi.co/api/v2/pokemon", async () => {
-    console.log("list");
     return HttpResponse.json(pokemonList);
   }),
   http.get("https://pokeapi.co/api/v2/pokemon/1", () => {
-    console.log("1");
     return HttpResponse.json(pokemonData("bulbasaur"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon/2", async () => {
-    console.log("2");
     return HttpResponse.json(pokemonData("ivysaur"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon/3", async () => {
-    console.log("3");
     return HttpResponse.json(pokemonData("venusaur"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon/4", async () => {
-    console.log("4 slow");
     await delay();
     return HttpResponse.json(pokemonData("Charmander"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon-species/1", async () => {
-    console.log("s1");
     return HttpResponse.json(pokemonSpecies("one"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon-species/2", async () => {
-    console.log("s2");
     return HttpResponse.json(pokemonSpecies("two"));
   }),
   http.get("https://pokeapi.co/api/v2/pokemon-species/3", async () => {
-    console.log("s3");
     return HttpResponse.json(pokemonSpecies("three"));
   }),
 );
