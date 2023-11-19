@@ -2,7 +2,7 @@ import "./loader.scss";
 
 export default function Loader() {
   return (
-    <div className="loader-wrapper">
+    <div className="loader-wrapper small">
       <div className="loader"></div>
     </div>
   );

@@ -1,32 +1,40 @@
-import { useNavigate, Outlet, useMatch } from "react-router-dom";
-import PokemonCard from "../PokemonCard/PokemonCard";
+import { useNavigate, useMatch, useSearchParams } from "react-router-dom";
 import "./searchResults.scss";
-import { useContext } from "react";
-import { PokemonSearchContext } from "../Context/Context";
 import { DEFAULT_PATH } from "../../../constants";
+import { pokemonAPI } from "../../../services/PokemonService";
+import PokemonCard2 from "../PokemonCard/PokemonCard";
+import { useAppSelector } from "../../../hooks/redux";
+import Loader from "../../Loader/Loader";
+import { useEffect } from "react";
 
-export default function SearchResults() {
-  const { pokemons } = useContext(PokemonSearchContext);
+export default function SearchResults2() {
+  const [, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
+  const { search, limit, page } = useAppSelector(
+    (state) => state.queryParamsReducer,
+  );
+  const offset = ((Number(page) - 1) * Number(limit)).toString();
+  const { data: pokemons, isLoading } = search
+    ? pokemonAPI.useGetPokemonByNameQuery(search)
+    : pokemonAPI.useListPokemonsQuery({
+        limit,
+        offset,
+      });
   const isShowingDetails = useMatch("details/:id");
 
+  useEffect(() => {
+    console.log(isLoading);
+  }, [isLoading]);
+
   const handlePrev = () => {
-    if (!pokemons?.prev) return;
-    const params = getQuerryParamsFromUrl(pokemons.prev);
-    if (!params.offset || !params.limit) return;
-    queryParams.set("offset", params.offset);
-    queryParams.set("limit", params.limit);
-    navigate({ search: queryParams.toString() });
+    const newPage = (Number(page) - 1).toString();
+    setSearchParams({ page: newPage, limit });
   };
 
   const handleNext = () => {
-    if (!pokemons?.next) return;
-    const params = getQuerryParamsFromUrl(pokemons.next);
-    if (!params.offset || !params.limit) return;
-    queryParams.set("offset", params.offset);
-    queryParams.set("limit", params.limit);
-    navigate({ search: queryParams.toString() });
+    const newPage = (Number(page) + 1).toString();
+    setSearchParams({ page: newPage, limit });
   };
 
   const openDetails = (key: number) => {
@@ -40,49 +48,50 @@ export default function SearchResults() {
     navigate({ pathname: DEFAULT_PATH, search: queryParams.toString() });
   };
 
-  const getQuerryParamsFromUrl = (url: string) => {
-    const params = new URLSearchParams(url.split("?")[1]);
-    const limit = params.get("limit");
-    const offset = params.get("offset");
-
-    return { offset: offset, limit: limit };
-  };
-
   return (
-    <div className="pokemon-section">
-      <div className="search-results">
-        {pokemons?.prev ? (
-          <button onClick={handlePrev}>&lt;</button>
-        ) : (
-          <button className="disabled">&lt;</button>
-        )}
-        <div
-          className="search-results__container"
-          onClick={isShowingDetails ? closeDetails : undefined}
-        >
-          {pokemons?.data.map((pokemon) => {
-            if (pokemon)
-              return (
-                <PokemonCard
-                  key={pokemon.key}
-                  name={pokemon.name}
-                  imgUrl={pokemon.imgUrl}
-                  descr={pokemon.descr}
-                  onPress={() => openDetails(pokemon.key)}
-                />
-              );
-          })}
-          {pokemons?.data.every((pokemon) => !pokemon) && (
-            <h3>Nothing found</h3>
+    <>
+      {isLoading && <Loader />}
+      {pokemons && (
+        <div className="search-results">
+          {"previous" in pokemons && pokemons?.previous ? (
+            <button onClick={handlePrev}>&lt;</button>
+          ) : (
+            <button className="disabled">&lt;</button>
+          )}
+          <div
+            className="search-results__container"
+            onClick={isShowingDetails ? closeDetails : undefined}
+          >
+            {"results" in pokemons &&
+              pokemons?.results.map((pokemon) => {
+                const id = Number(pokemon.url.split("/").slice(-2, -1)[0]);
+                if (pokemon)
+                  return (
+                    <PokemonCard2
+                      key={id}
+                      id={id}
+                      onPress={() => openDetails(id)}
+                    />
+                  );
+              })}
+            {!("results" in pokemons) && !("id" in pokemons) && (
+              <h3>Nothing found</h3>
+            )}
+            {"id" in pokemons && (
+              <PokemonCard2
+                key={pokemons.id}
+                id={pokemons.id}
+                onPress={() => openDetails(pokemons.id)}
+              />
+            )}
+          </div>
+          {"next" in pokemons && pokemons?.next ? (
+            <button onClick={handleNext}>&gt;</button>
+          ) : (
+            <button className="disabled">&gt;</button>
           )}
         </div>
-        {pokemons?.next ? (
-          <button onClick={handleNext}>&gt;</button>
-        ) : (
-          <button className="disabled">&gt;</button>
-        )}
-      </div>
-      <Outlet />
-    </div>
+      )}
+    </>
   );
 }

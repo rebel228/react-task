@@ -26,3 +26,9 @@ export type SearchBarProps = {
 export type SearchBarData = {
   inputValue: string;
 };
+
+export interface QueryParams {
+  search?: string;
+  limit: string;
+  page?: string;
+}
