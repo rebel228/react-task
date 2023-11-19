@@ -1,11 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import { customRender } from "../__mocks__/PokemonDataMocks";
+import { pokemonAPI } from "../../services/PokemonService";
 
 describe("Testing pokemon cards", () => {
   it("Ensure that the card renders the relevant pokemon name", async () => {
-    // customRender();
     const component = customRender();
     const { container } = component;
     await waitFor(() => {
@@ -17,15 +17,19 @@ describe("Testing pokemon cards", () => {
       expect(screen.getByText("Venusaur")).toBeTruthy();
     });
   });
-  it("Check if clicking on the card opened details", async () => {
+  it("Expected an API call to be made", async () => {
+    const mockApiCAll = vi.spyOn(pokemonAPI, "useGetPokemonByNameQuery");
     customRender();
     const card = screen.getByText("Bulbasaur");
     fireEvent.click(card);
+    await waitFor(() => {
+      expect(mockApiCAll).toHaveBeenCalledTimes(7);
+    });
+  });
+  it("Check if clicking on the card opened details", async () => {
+    customRender();
     await waitFor(async () => {
       expect(screen.queryByText("Abilities")).toBeTruthy();
     });
   });
-  // it("Expected an API call to be made", async () => {
-  //   expect(mockLoader).toHaveBeenCalled();
-  // });
 });
