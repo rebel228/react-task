@@ -15,7 +15,11 @@ export default function SearchResults2() {
     (state) => state.queryParamsReducer,
   );
   const offset = ((Number(page) - 1) * Number(limit)).toString();
-  const { data: pokemons, isLoading } = search
+  const {
+    data: pokemons,
+    isLoading,
+    isFetching,
+  } = search
     ? pokemonAPI.useGetPokemonByNameQuery(search)
     : pokemonAPI.useListPokemonsQuery({
         limit,
@@ -50,7 +54,6 @@ export default function SearchResults2() {
 
   return (
     <>
-      {isLoading && <Loader />}
       {pokemons && (
         <div className="search-results">
           {"previous" in pokemons && pokemons?.previous ? (
@@ -58,33 +61,38 @@ export default function SearchResults2() {
           ) : (
             <button className="disabled">&lt;</button>
           )}
-          <div
-            className="search-results__container"
-            onClick={isShowingDetails ? closeDetails : undefined}
-          >
-            {"results" in pokemons &&
-              pokemons?.results.map((pokemon) => {
-                const id = Number(pokemon.url.split("/").slice(-2, -1)[0]);
-                if (pokemon)
-                  return (
-                    <PokemonCard2
-                      key={id}
-                      id={id}
-                      onPress={() => openDetails(id)}
-                    />
-                  );
-              })}
-            {!("results" in pokemons) && !("id" in pokemons) && (
-              <h3>Nothing found</h3>
-            )}
-            {"id" in pokemons && (
-              <PokemonCard2
-                key={pokemons.id}
-                id={pokemons.id}
-                onPress={() => openDetails(pokemons.id)}
-              />
-            )}
-          </div>
+          {isFetching ? (
+            <Loader big={true} />
+          ) : (
+            <div
+              className="search-results__container"
+              onClick={isShowingDetails ? closeDetails : undefined}
+            >
+              {"results" in pokemons &&
+                pokemons?.results.map((pokemon) => {
+                  const id = Number(pokemon.url.split("/").slice(-2, -1)[0]);
+                  if (pokemon)
+                    return (
+                      <PokemonCard2
+                        key={id}
+                        id={id}
+                        onPress={() => openDetails(id)}
+                      />
+                    );
+                })}
+              {!("results" in pokemons) && !("id" in pokemons) && (
+                <h3>Nothing found</h3>
+              )}
+              {"id" in pokemons && (
+                <PokemonCard2
+                  key={pokemons.id}
+                  id={pokemons.id}
+                  onPress={() => openDetails(pokemons.id)}
+                />
+              )}
+            </div>
+          )}
+
           {"next" in pokemons && pokemons?.next ? (
             <button onClick={handleNext}>&gt;</button>
           ) : (

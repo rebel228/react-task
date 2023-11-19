@@ -1,7 +1,6 @@
 import { Outlet, useSearchParams } from "react-router-dom";
 import "./App.scss";
 import ErrorBoundary from "./components/ErrorBoundary/ErrorBoundary";
-import { ContentProvider } from "./components/PokemonSearch/Context/Context";
 import { useEffect } from "react";
 import { useAppDispatch } from "./hooks/redux";
 import { querySlice } from "./store/reducers/queryParamsSlice";
@@ -17,7 +16,7 @@ export default function App() {
   useEffect(() => {
     dispatch(
       setQueryParams({
-        search: searchParams.get("search") || undefined,
+        search: searchParams.get("search") || "",
         limit: searchParams.get("limit") || DEFAULT_LIMIT,
         page: searchParams.get("page") || "1",
       }),
@@ -27,15 +26,11 @@ export default function App() {
   return (
     <main>
       <ErrorBoundary>
-        <ContentProvider>
-          <>
-            <SearchControls />
-            <div className="pokemon-section">
-              <SearchResults />
-              <Outlet />
-            </div>
-          </>
-        </ContentProvider>
+        <SearchControls />
+        <div className="pokemon-section">
+          <SearchResults />
+          <Outlet />
+        </div>
       </ErrorBoundary>
     </main>
   );
