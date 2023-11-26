@@ -1,7 +1,5 @@
 import styles from './pokemonDetails.module.scss';
-
 import { upperFirstLetter } from '../utils';
-//import { DEFAULT_PATH } from '../../constants';
 import { pokemonAPI } from '../../../services/PokemonService';
 import Loader from '../../Loader/Loader';
 import Image from 'next/image';

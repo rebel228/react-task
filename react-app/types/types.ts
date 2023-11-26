@@ -8,13 +8,10 @@ export interface QueryParams {
   page: string;
 }
 
-export interface SearchControlsProps {
+export interface SearchResultsProps {
   url: string;
   search: string | null;
   page: string;
-}
-
-export interface SearchResultsProps extends SearchControlsProps {
   limit: string;
 }
 
@@ -25,4 +22,4 @@ export interface PokemonDetailsProps {
   limit: string;
 }
 
-export interface FullProps extends SearchControlsProps, PokemonDetailsProps {}
+export interface FullProps extends SearchResultsProps, PokemonDetailsProps {}
