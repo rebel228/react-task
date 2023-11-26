@@ -1,19 +1,20 @@
 import Link from 'next/link';
 import SearchBar from '../SearchBar/SearchBar';
 import styles from './SearchControls.module.scss';
-import { SearchControlsProps } from '../../../types/types';
+import { SearchResultsProps } from '../../../types/types';
 
 export default function SearchControls({
   url,
   search,
   page,
-}: SearchControlsProps) {
+  limit,
+}: SearchResultsProps) {
   const path = url.split('?')[0];
   const searchString = search ? `&search=${search}` : '';
 
   return (
     <div className={styles.search__contols}>
-      <SearchBar />
+      <SearchBar url={url} limit={limit} />
       <div className={styles.controls__amount}>
         <span className="pagenumber-text">{`Page: ${page}`}</span>
         {[10, 20, 50].map((perPage) => (

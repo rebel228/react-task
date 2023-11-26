@@ -10,7 +10,7 @@ export default function Details({ url, page, search, limit, id }: FullProps) {
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24`}
     >
-      <SearchControls url={url} page={page} search={search} />
+      <SearchControls url={url} page={page} search={search} limit={limit} />
 
       <div className={styles.container}>
         <SearchResults url={url} page={page} search={search} limit={limit} />

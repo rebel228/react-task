@@ -70,7 +70,7 @@ export default function SearchResults({
               )}
               {'id' in pokemons && (
                 <Link
-                  href={`${DEFAULT_PATH}/details/${pokemons.id}?page=${page}&limit=${limit}${searchString}`}
+                  href={`${DEFAULT_PATH}details/${pokemons.id}?page=${page}&limit=${limit}${searchString}`}
                   key={pokemons.id}
                 >
                   <PokemonCard id={pokemons.id} />

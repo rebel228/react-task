@@ -11,7 +11,7 @@ export default function Home({ url, page, search, limit }: SearchResultsProps) {
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24`}
     >
-      <SearchControls url={url} page={page} search={search} />
+      <SearchControls url={url} page={page} search={search} limit={limit} />
       <SearchResults url={url} page={page} search={search} limit={limit} />
     </main>
   );
