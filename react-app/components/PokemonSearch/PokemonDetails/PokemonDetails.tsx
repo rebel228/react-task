@@ -6,27 +6,26 @@ import { pokemonAPI } from '../../../services/PokemonService';
 import Loader from '../../Loader/Loader';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useAppSelector } from '../../../hooks/redux';
 import { DEFAULT_PATH } from '../../constants';
+import { PokemonDetailsProps } from '../../../types/types';
 
-export default function PokemonDetails({ id }: { id: string }) {
+export default function PokemonDetails({
+  id,
+  page,
+  limit,
+  search,
+}: PokemonDetailsProps) {
   const { data: pokemon, isLoading } = pokemonAPI.useGetPokemonByNameQuery(id);
-  const { search, limit, page } = useAppSelector(
-    (state) => state.queryParamsReducer
-  );
-  const closeDetails = () => {
-    const path = DEFAULT_PATH;
-    const searchString = search ? `&search=${search}` : '';
-    const newUrl = `${path}?page=${page}&limit=${limit}${searchString}`;
-    return newUrl;
-  };
+  const searchString = search ? `&search=${search}` : '';
 
   return (
     <div className={styles.section__details}>
       {isLoading && <Loader />}
       {pokemon && (
         <div className={styles.pokemon__details}>
-          <Link href={closeDetails()}>
+          <Link
+            href={`${DEFAULT_PATH}?page=${page}&limit=${limit}${searchString}`}
+          >
             <div className={styles.closebtn}></div>
           </Link>
           <h3 className={styles.details__title}>

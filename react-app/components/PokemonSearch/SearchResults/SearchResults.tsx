@@ -2,14 +2,16 @@ import styles from './searchResults.module.scss';
 import { DEFAULT_PATH } from '../../constants';
 import { pokemonAPI } from '../../../services/PokemonService';
 import PokemonCard from '../PokemonCard/PokemonCard';
-import { useAppSelector } from '../../../hooks/redux';
 import Loader from '../../Loader/Loader';
 import Link from 'next/link';
+import { SearchResultsProps } from '../../../types/types';
 
-export default function SearchResults({ url }: { url: string }) {
-  const { search, limit, page } = useAppSelector(
-    (state) => state.queryParamsReducer
-  );
+export default function SearchResults({
+  url,
+  search,
+  page,
+  limit,
+}: SearchResultsProps) {
   const offset = ((Number(page) - 1) * Number(limit)).toString();
   const {
     data: pokemons,
@@ -21,36 +23,9 @@ export default function SearchResults({ url }: { url: string }) {
         limit,
         offset,
       });
-  const isShowingDetails = url.includes('details/');
 
-  const handlePrev = () => {
-    const path = url.split('?')[0];
-    const newpage = Number(page) - 1;
-    const searchString = search ? `&search=${search}` : '';
-    const newUrl = `${path}?page=${newpage}&limit=${limit}${searchString}`;
-    return newUrl;
-  };
-
-  const handleNext = () => {
-    const path = url.split('?')[0];
-    const newpage = Number(page) + 1;
-    const searchString = search ? `&search=${search}` : '';
-    const newUrl = `${path}?page=${newpage}&limit=${limit}${searchString}`;
-    return newUrl;
-  };
-
-  const openDetails = (key: number) => {
-    const path = `/details/${key}`;
-    const searchString = search ? `&search=${search}` : '';
-    const newUrl = `${path}?page=${page}&limit=${limit}${searchString}`;
-    return newUrl;
-  };
-
-  const closeDetails = () => {
-    return `${DEFAULT_PATH}?page=${page}&limit=${limit}` + search
-      ? `&search=${search}`
-      : '';
-  };
+  const path = url.split('?')[0];
+  const searchString = search ? `&search=${search}` : '';
 
   return (
     <div className={styles.search__results}>
@@ -61,7 +36,9 @@ export default function SearchResults({ url }: { url: string }) {
             className={`${
               'previous' in pokemons && pokemons?.previous ? '' : 'disabled'
             }`}
-            href={handlePrev()}
+            href={`${path}?page=${
+              Number(page) - 1
+            }&limit=${limit}${searchString}`}
           >
             <button
               className={`${
@@ -74,17 +51,17 @@ export default function SearchResults({ url }: { url: string }) {
           {isLoading ? (
             <Loader big={true} />
           ) : (
-            <div
-              className={styles.results__container}
-              onClick={isShowingDetails ? closeDetails : undefined}
-            >
+            <div className={styles.results__container}>
               {'results' in pokemons &&
                 pokemons?.results.map((pokemon) => {
                   const id = Number(pokemon.url.split('/').slice(-2, -1)[0]);
                   if (pokemon)
                     return (
-                      <Link href={openDetails(id)} key={id}>
-                        <PokemonCard id={id} onPress={() => openDetails(id)} />
+                      <Link
+                        href={`${DEFAULT_PATH}details/${id}?page=${page}&limit=${limit}${searchString}`}
+                        key={id}
+                      >
+                        <PokemonCard id={id} />
                       </Link>
                     );
                 })}
@@ -92,11 +69,11 @@ export default function SearchResults({ url }: { url: string }) {
                 <h3>Nothing found</h3>
               )}
               {'id' in pokemons && (
-                <Link href={openDetails(pokemons.id)} key={pokemons.id}>
-                  <PokemonCard
-                    id={pokemons.id}
-                    onPress={() => openDetails(pokemons.id)}
-                  />
+                <Link
+                  href={`${DEFAULT_PATH}/details/${pokemons.id}?page=${page}&limit=${limit}${searchString}`}
+                  key={pokemons.id}
+                >
+                  <PokemonCard id={pokemons.id} />
                 </Link>
               )}
             </div>
@@ -106,7 +83,9 @@ export default function SearchResults({ url }: { url: string }) {
             className={`${
               'next' in pokemons && pokemons?.next ? '' : 'disabled'
             }`}
-            href={handleNext()}
+            href={`${path}?page=${
+              Number(page) + 1
+            }&limit=${limit}${searchString}`}
           >
             <button
               className={`${

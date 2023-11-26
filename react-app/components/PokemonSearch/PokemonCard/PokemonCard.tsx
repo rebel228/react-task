@@ -5,7 +5,6 @@ import Image from 'next/image';
 import styles from './PokemonCard.module.scss';
 
 interface PokemonCardProps {
-  onPress?: () => void;
   id: number;
 }
 
@@ -24,7 +23,6 @@ export default function PokemonCard(props: PokemonCardProps) {
             ? styles.pokemon
             : `${styles.pokemon} ${styles.active}`
         }
-        onClick={loadPokemon || loadSpecies ? undefined : props.onPress}
       >
         {(loadPokemon || loadSpecies) && <Loader />}
         {pokemon && species && (

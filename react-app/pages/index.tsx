@@ -5,16 +5,17 @@ import { wrapper } from '../store/store';
 import { pokemonAPI } from '../services/PokemonService';
 import { DEFAULT_LIMIT } from '../components/constants';
 import { querySlice } from '../store/reducers/queryParamsSlice';
+import { SearchResultsProps } from '../types/types';
 
 export const inter = Inter({ subsets: ['latin'] });
 
-export default function Home({ url }: { url: string }) {
+export default function Home({ url, page, search, limit }: SearchResultsProps) {
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
-      <SearchControls url={url} />
-      <SearchResults url={url} />
+      <SearchControls url={url} page={page} search={search} />
+      <SearchResults url={url} page={page} search={search} limit={limit} />
     </main>
   );
 }
@@ -23,6 +24,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (context) => {
     const { setQueryParams } = querySlice.actions;
     const url = context.resolvedUrl;
+    const id = context.params?.id || null;
     const page = !context.query.page
       ? '1'
       : typeof context.query.page === 'string'
@@ -39,7 +41,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       ? context.query.search
       : context.query.search[0];
     const offset = ((Number(page) - 1) * Number(limit)).toString();
-    console.log(search, limit, page);
+
     store.dispatch(
       setQueryParams({
         search,
@@ -47,7 +49,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
         page,
       })
     );
-    console.log(store.getState());
+
     const response = search
       ? await store.dispatch(
           pokemonAPI.endpoints.getPokemonByName.initiate(search)
@@ -58,6 +60,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
 
     const pokemons = response.data;
     await Promise.all(store.dispatch(pokemonAPI.util.getRunningQueriesThunk()));
-    return { props: { pokemons, url } };
+    return { props: { pokemons, url, page, search, limit, id } };
   }
 );
