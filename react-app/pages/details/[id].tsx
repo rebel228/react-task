@@ -1,4 +1,3 @@
-import { inter } from '..';
 import PokemonDetails from '../../components/PokemonSearch/PokemonDetails/PokemonDetails';
 import SearchControls from '../../components/PokemonSearch/SearchControls/SearchColtrols';
 import SearchResults from '../../components/PokemonSearch/SearchResults/SearchResults';
@@ -9,7 +8,7 @@ import { FullProps } from '../../types/types';
 export default function Details({ url, page, search, limit, id }: FullProps) {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center justify-between p-24`}
     >
       <SearchControls url={url} page={page} search={search} />
 
@@ -20,13 +19,5 @@ export default function Details({ url, page, search, limit, id }: FullProps) {
     </main>
   );
 }
-
-// export const getServerSideProps = wrapper.getServerSideProps(
-//   () => async (context) => {
-//     const url = context.resolvedUrl;
-//     const id = context.params?.id;
-//     return { props: { url, id } };
-//   }
-// );
 
 export const getServerSideProps = serverSide;

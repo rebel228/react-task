@@ -10,7 +10,7 @@ export interface QueryParams {
 
 export interface SearchControlsProps {
   url: string;
-  search: string;
+  search: string | null;
   page: string;
 }
 
@@ -20,7 +20,7 @@ export interface SearchResultsProps extends SearchControlsProps {
 
 export interface PokemonDetailsProps {
   id: string;
-  search: string;
+  search: string | null;
   page: string;
   limit: string;
 }

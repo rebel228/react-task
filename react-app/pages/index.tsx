@@ -1,4 +1,3 @@
-import { Inter } from 'next/font/google';
 import SearchControls from '../components/PokemonSearch/SearchControls/SearchColtrols';
 import SearchResults from '../components/PokemonSearch/SearchResults/SearchResults';
 import { wrapper } from '../store/store';
@@ -7,12 +6,10 @@ import { DEFAULT_LIMIT } from '../components/constants';
 import { querySlice } from '../store/reducers/queryParamsSlice';
 import { SearchResultsProps } from '../types/types';
 
-export const inter = Inter({ subsets: ['latin'] });
-
 export default function Home({ url, page, search, limit }: SearchResultsProps) {
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={`flex min-h-screen flex-col items-center justify-between p-24`}
     >
       <SearchControls url={url} page={page} search={search} />
       <SearchResults url={url} page={page} search={search} limit={limit} />

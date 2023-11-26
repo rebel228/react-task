@@ -26,7 +26,7 @@ export default function PokemonDetails({
           <Link
             href={`${DEFAULT_PATH}?page=${page}&limit=${limit}${searchString}`}
           >
-            <div className={styles.closebtn}></div>
+            <div className={styles.closebtn} data-testid={'close'}></div>
           </Link>
           <h3 className={styles.details__title}>
             {upperFirstLetter(pokemon.name)}
