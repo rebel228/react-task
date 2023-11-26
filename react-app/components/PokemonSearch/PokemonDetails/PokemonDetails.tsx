@@ -5,15 +5,20 @@ import { upperFirstLetter } from '../utils';
 import { pokemonAPI } from '../../../services/PokemonService';
 import Loader from '../../Loader/Loader';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useAppSelector } from '../../../hooks/redux';
+import { DEFAULT_PATH } from '../../constants';
 
-export default function PokemonDetails() {
-  //const navigate = useNavigate();
-  //const queryParams = new URLSearchParams(location.search);
-  const { data: pokemon, isLoading } = pokemonAPI.useGetPokemonByNameQuery(
-    location.pathname.split('/').pop() || ''
+export default function PokemonDetails({ id }: { id: string }) {
+  const { data: pokemon, isLoading } = pokemonAPI.useGetPokemonByNameQuery(id);
+  const { search, limit, page } = useAppSelector(
+    (state) => state.queryParamsReducer
   );
   const closeDetails = () => {
-    //navigate({ pathname: DEFAULT_PATH, search: queryParams.toString() });
+    const path = DEFAULT_PATH;
+    const searchString = search ? `&search=${search}` : '';
+    const newUrl = `${path}?page=${page}&limit=${limit}${searchString}`;
+    return newUrl;
   };
 
   return (
@@ -21,7 +26,9 @@ export default function PokemonDetails() {
       {isLoading && <Loader />}
       {pokemon && (
         <div className={styles.pokemon__details}>
-          <div className={styles.closebtn} onClick={closeDetails}></div>
+          <Link href={closeDetails()}>
+            <div className={styles.closebtn}></div>
+          </Link>
           <h3 className={styles.details__title}>
             {upperFirstLetter(pokemon.name)}
           </h3>

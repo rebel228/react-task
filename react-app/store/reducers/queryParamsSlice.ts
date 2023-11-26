@@ -21,10 +21,7 @@ export const querySlice = createSlice({
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.queryParams,
-      };
+      Object.assign(state, action.payload.queryParamsReducer);
     },
   },
 });

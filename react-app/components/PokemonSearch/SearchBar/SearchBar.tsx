@@ -9,13 +9,7 @@ export default function SearchBar() {
   const dispatch = useAppDispatch();
   const { setSearchString } = searchSlice.actions;
 
-  // useEffect(() => {
-  //   if (searchFild.current) searchFild.current.value = searchString;
-  // });
-
   const handleSearch = (value: string) => {
-    //setSearchParams({ search: value, page: '1' });
-    localStorage.setItem('search', value);
     dispatch(setSearchString({ searchString: value }));
   };
 

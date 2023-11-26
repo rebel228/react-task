@@ -6,14 +6,14 @@ import { pokemonAPI } from '../services/PokemonService';
 import { DEFAULT_LIMIT } from '../components/constants';
 import { querySlice } from '../store/reducers/queryParamsSlice';
 
-const inter = Inter({ subsets: ['latin'] });
+export const inter = Inter({ subsets: ['latin'] });
 
 export default function Home({ url }: { url: string }) {
   return (
     <main
       className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
-      <SearchControls />
+      <SearchControls url={url} />
       <SearchResults url={url} />
     </main>
   );
@@ -39,6 +39,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
       ? context.query.search
       : context.query.search[0];
     const offset = ((Number(page) - 1) * Number(limit)).toString();
+    console.log(search, limit, page);
     store.dispatch(
       setQueryParams({
         search,
@@ -56,7 +57,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
         );
 
     const pokemons = response.data;
-    //console.log(pokemons, url);
     await Promise.all(store.dispatch(pokemonAPI.util.getRunningQueriesThunk()));
     return { props: { pokemons, url } };
   }

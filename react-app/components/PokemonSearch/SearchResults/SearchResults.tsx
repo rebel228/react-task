@@ -10,7 +10,6 @@ export default function SearchResults({ url }: { url: string }) {
   const { search, limit, page } = useAppSelector(
     (state) => state.queryParamsReducer
   );
-  console.log(search, limit, page);
   const offset = ((Number(page) - 1) * Number(limit)).toString();
   const {
     data: pokemons,

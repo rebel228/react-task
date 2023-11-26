@@ -6,7 +6,6 @@ interface searchState {
 }
 
 const initialState: searchState = {
-  // searchString: localStorage.getItem('search') || '',
   searchString: '',
 };
 

@@ -6,6 +6,8 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  text-align: center;
+  align-items: center;
   width: 380px;
   background-color: rgba(184, 218, 218, 0.767);
   border-radius: 18px;
@@ -45,7 +47,7 @@
   &:hover {
     opacity: 1;
   }
-  &::before, ::after {
+  &::before, &::after {
     position: absolute;
     left: 15px;
     content: ' ';
