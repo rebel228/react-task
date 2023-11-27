@@ -77,7 +77,11 @@ export default function SearchResults({
                       <PokemonCard
                         id={id}
                         key={id}
-                        onPress={() => openDetails(id.toString())}
+                        onPress={
+                          isShowingDetails
+                            ? undefined
+                            : () => openDetails(id.toString())
+                        }
                       />
                     );
                 })}
@@ -88,7 +92,11 @@ export default function SearchResults({
                 <PokemonCard
                   id={pokemons.id}
                   key={pokemons.id}
-                  onPress={() => openDetails(pokemons.id.toString())}
+                  onPress={
+                    isShowingDetails
+                      ? undefined
+                      : () => openDetails(pokemons.id.toString())
+                  }
                 />
               )}
             </div>
