@@ -24,7 +24,6 @@ export default function SearchResults({
         offset,
       });
 
-  const isShowingDetails = router.pathname.includes('details/') ? true : false;
   const path = url.split('?')[0];
   const searchString = search ? `&search=${search}` : '';
 
@@ -66,10 +65,7 @@ export default function SearchResults({
           {isLoading ? (
             <Loader big={true} />
           ) : (
-            <div
-              className={styles.results__container}
-              onClick={isShowingDetails ? closeDetails : undefined}
-            >
+            <div className={styles.results__container} onClick={closeDetails}>
               {'results' in pokemons &&
                 pokemons?.results.map((pokemon) => {
                   const id = Number(pokemon.url.split('/').slice(-2, -1)[0]);
