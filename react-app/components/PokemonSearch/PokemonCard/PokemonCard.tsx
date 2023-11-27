@@ -6,6 +6,7 @@ import styles from './PokemonCard.module.scss';
 
 interface PokemonCardProps {
   id: number;
+  onPress?: () => void;
 }
 
 export default function PokemonCard(props: PokemonCardProps) {
@@ -23,6 +24,7 @@ export default function PokemonCard(props: PokemonCardProps) {
             ? styles.pokemon
             : `${styles.pokemon} ${styles.active}`
         }
+        onClick={loadPokemon || loadSpecies ? undefined : props.onPress}
       >
         {(loadPokemon || loadSpecies) && <Loader />}
         {pokemon && species && (
