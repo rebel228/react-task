@@ -55,7 +55,7 @@ export const getServerSideProps = wrapper.getServerSideProps(
           pokemonAPI.endpoints.listPokemons.initiate({ limit, offset })
         );
 
-    const pokemons = response.data;
+    const pokemons = response.data || null;
     await Promise.all(store.dispatch(pokemonAPI.util.getRunningQueriesThunk()));
     return { props: { pokemons, url, page, search, limit, id } };
   }
