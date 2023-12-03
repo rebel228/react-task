@@ -17,6 +17,13 @@ export interface RawUserFormsData {
   passwordrepeat: string;
   gender: string;
   terms: boolean | undefined;
-  image: FileList;
   country: string;
+}
+
+export interface RawUserFormsDataUnc extends RawUserFormsData {
+  image: File;
+}
+
+export interface RawUserFormsDataCnt extends RawUserFormsData {
+  image: FileList;
 }
