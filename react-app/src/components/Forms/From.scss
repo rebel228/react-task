@@ -1,4 +1,5 @@
-.Form__uncontrolled {
+.Form__uncontrolled,
+.Form__controlled {
   display: flex;
   flex-direction: column;
   gap: 25px;
