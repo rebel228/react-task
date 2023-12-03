@@ -1,6 +1,6 @@
-import { object, string, number, mixed, bool } from 'yup';
+import { object, string, number, mixed, bool, ValidationError } from 'yup';
 import './UncontrolledFrom.scss';
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { isValidFileType } from '../../utils/validateFile';
 import { useAppDispatch } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
@@ -11,6 +11,17 @@ const MAX_FILE_SIZE = 202400;
 export default function UndcontrolledForm() {
   const navigate = useNavigate();
   const [gender, setGender] = useState<string>();
+  const [errors, setErrors] = useState({
+    username: false,
+    age: false,
+    email: false,
+    password: false,
+    passwordrepeat: false,
+    gender: false,
+    terms: false,
+    image: false,
+  });
+
   const dispatch = useAppDispatch();
   const { addForm } = formSlice.actions;
   const nameRef = useRef<HTMLInputElement>(null);
@@ -67,6 +78,10 @@ export default function UndcontrolledForm() {
       ),
   });
 
+  useEffect(() => {
+    console.log(errors);
+  }, [errors]);
+
   const handleGender = (event: FormEvent<HTMLDivElement>) => {
     const element = event.target as HTMLInputElement;
     setGender(element.value);
@@ -81,31 +96,59 @@ export default function UndcontrolledForm() {
 
     const isValid = await userSchema.isValid(formData, { abortEarly: false });
 
-    if (isValid) {
-      console.log('valid', formData);
-      const reader = new FileReader();
-      if (formData.image) reader.readAsDataURL(formData.image);
-      if (formData.image) {
-        const { username, age, email, password, gender, terms } = formData;
-        reader.onloadend = () => {
-          dispatch(
-            addForm({
-              username,
-              age,
-              email,
-              password,
-              gender,
-              terms,
-              image: reader.result,
-            })
-          );
-          navigate('/');
+    if (isValid) handleDispatch();
+    else handleErrors();
+  };
+
+  const handleDispatch = async () => {
+    console.log('valid', formData);
+    const reader = new FileReader();
+    if (formData.image) reader.readAsDataURL(formData.image);
+    if (formData.image) {
+      const { username, age, email, password, gender, terms } = formData;
+      reader.onloadend = () => {
+        dispatch(
+          addForm({
+            username,
+            age,
+            email,
+            password,
+            gender,
+            terms,
+            image: reader.result,
+          })
+        );
+        navigate('/');
+      };
+    }
+  };
+
+  const handleErrors = async () => {
+    await userSchema.validate(formData, { abortEarly: false }).catch((err) => {
+      const validationErrors = err.inner.reduce(
+        (acc: ValidationError[], error: ValidationError) => {
+          if (error.path)
+            return {
+              ...acc,
+              [error.path]: error.message,
+            };
+        },
+        {}
+      );
+      console.log('validation errors:', validationErrors);
+      setErrors(() => {
+        return {
+          username: validationErrors.username || false,
+          age: validationErrors.age || false,
+          email: validationErrors.email || false,
+          password: validationErrors.password || false,
+          passwordrepeat: validationErrors.passwordrepeat || false,
+          gender: validationErrors.gender || false,
+          terms: validationErrors.terms || false,
+          image: validationErrors.image || false,
         };
-      }
-    } else
-      userSchema.validate(formData, { abortEarly: false }).catch((err) => {
-        console.log(err);
       });
+    });
   };
 
   return (
@@ -116,7 +159,10 @@ export default function UndcontrolledForm() {
     >
       <h1>Fill the data</h1>
 
-      <div id="usernamefield" className="field">
+      <div
+        id="usernamefield"
+        className={`field${errors.username ? ' error' : ''}`}
+      >
         <label className="field__label" htmlFor="username">
           Name
         </label>
@@ -128,13 +174,15 @@ export default function UndcontrolledForm() {
           ref={nameRef}
           required
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">
+          {errors.username && errors.username}
+        </div>
         <p className="field__description">
           First character must me upper cased
         </p>
       </div>
 
-      <div id="agefield" className="field">
+      <div id="agefield" className={`field${errors.age ? ' error' : ''}`}>
         <label className="field__label" htmlFor="age">
           Age
         </label>
@@ -146,13 +194,13 @@ export default function UndcontrolledForm() {
           ref={ageRef}
           required
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">{errors.age && errors.age}</div>
         <p className="field__description">
           Should be number, no negative values
         </p>
       </div>
 
-      <div id="emailfield" className="field">
+      <div id="emailfield" className={`field${errors.email ? ' error' : ''}`}>
         <label className="field__label" htmlFor="email">
           Email
         </label>
@@ -164,10 +212,13 @@ export default function UndcontrolledForm() {
           ref={emailRef}
           required
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">{errors.email && errors.email}</div>
       </div>
 
-      <div id="passwordfield" className="field">
+      <div
+        id="passwordfield"
+        className={`field${errors.password ? ' error' : ''}`}
+      >
         <label className="field__label" htmlFor="password">
           Password
         </label>
@@ -179,14 +230,19 @@ export default function UndcontrolledForm() {
           ref={passwordRef}
           required
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">
+          {errors.password && errors.password}
+        </div>
         <p className="field__description">
           Use a number, a uppercased character, a lowercased character, a
           special character
         </p>
       </div>
 
-      <div id="passwordrepeat-field" className="field">
+      <div
+        id="passwordrepeat-field"
+        className={`field${errors.passwordrepeat ? ' error' : ''}`}
+      >
         <label className="field__label" htmlFor="passwordrepeat">
           Repeat password
         </label>
@@ -198,10 +254,16 @@ export default function UndcontrolledForm() {
           ref={passwordRepeatRef}
           required
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">
+          {errors.passwordrepeat && errors.passwordrepeat}
+        </div>
       </div>
 
-      <div id="gender-field" className="field" onChange={handleGender}>
+      <div
+        id="gender-field"
+        className={`field${errors.gender ? ' error' : ''}`}
+        onChange={handleGender}
+      >
         <label className="field__label">Select gender</label>
         <input
           className="form-control field__input"
@@ -219,10 +281,10 @@ export default function UndcontrolledForm() {
           value={'woman'}
         />
         <label htmlFor="woman">Woman</label>
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">{errors.gender && errors.gender}</div>
       </div>
 
-      <div id="terms-field" className="field">
+      <div id="terms-field" className={`field${errors.terms ? ' error' : ''}`}>
         <label className="field__label">Read and accept T&C</label>
         <input
           className="form-control field__input"
@@ -234,10 +296,10 @@ export default function UndcontrolledForm() {
           required
         />
         <label htmlFor="terms">I have read and accept T&C</label>
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">{errors.terms && errors.terms}</div>
       </div>
 
-      <div id="image-field" className="field">
+      <div id="image-field" className={`field${errors.image ? ' error' : ''}`}>
         <label className="field__label" htmlFor="image">
           Upload an image
         </label>
@@ -249,10 +311,10 @@ export default function UndcontrolledForm() {
           accept="image/png, image/jpeg"
           ref={imageRef}
         />
-        <div className="invalid-tooltip"></div>
+        <div className="invalid-tooltip">{errors.image && errors.image}</div>
       </div>
 
-      <div className="field">
+      <div className="field submit">
         <button id="form-submit" type="submit" className="field__button">
           Submit
         </button>

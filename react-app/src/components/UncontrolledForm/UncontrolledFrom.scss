@@ -1,25 +1,39 @@
 .Form__uncontrolled {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 25px;
 }
 
 .field {
   display: flex;
   gap: 10px;
+  padding: 12px;
   align-items: center;
   position: relative;
+  border: 1px solid rgba(128, 0, 128, 0.363);
+  border-radius: 8px;
+  &.error {
+    border-color: red;
+  }
+  &.submit {
+    border: none;
+    align-self: center;
+  }
 }
 
 .field__label {
   width: 155px;
 }
 
+.field__description {
+  margin: 0;
+}
+
 .invalid-tooltip {
   position: absolute;
   width: 177px;
   left: 165px;
-  top: 35px;
+  top: 29px;
   font-size: 12px;
   text-align: center;
   color: rgb(177, 10, 10);
