@@ -8,13 +8,18 @@ function App() {
   const forms = useAppSelector((state) => state.formsReducer);
   return (
     <>
-      <Link to={'/formone'}>UncontrolledForm</Link>
-      <div className="user-cards">
-        {forms.map((form, index) => {
-          return <UserCard key={index} form={form} />;
-        })}
-      </div>
-      <Outlet />
+      <header>
+        <Link to={'/formone'}>Uncontrolled Form</Link>
+        <Link to={'/formtwo'}>Controlled Form</Link>
+      </header>
+      <main>
+        <div className="user-cards">
+          {forms.map((form, index) => {
+            return <UserCard key={index} form={form} />;
+          })}
+        </div>
+        <Outlet />
+      </main>
     </>
   );
 }
