@@ -1,8 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
-import queryParamsReducer from './reducers/formDataSlice';
+import formsReducer from './reducers/formDataSlice';
 
 const rootReducer = combineReducers({
-  queryParamsReducer,
+  formsReducer,
 });
 export const setupStore = () => {
   return configureStore({

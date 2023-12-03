@@ -1,0 +1,20 @@
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid salmon;
+  border-radius: 8px;
+  padding: 10px;
+  width: 200px;
+}
+
+.user__text {
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+.user__image {
+  max-width: 100px;
+}

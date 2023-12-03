@@ -1,24 +1,16 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { UserFormData } from '../../types/types';
 
-interface FormData {
-  name: string;
-  age: number;
-  email: string;
-  password: string;
-  gender: 'Man' | 'Woman';
-  terms: boolean;
-}
+const initialState: UserFormData[] = [];
 
-const initialState: FormData[] = [];
-
-export const querySlice = createSlice({
+export const formSlice = createSlice({
   name: 'forms',
   initialState,
   reducers: {
-    addForm(state, action: PayloadAction<FormData>) {
+    addForm(state, action: PayloadAction<UserFormData>) {
       state.push(action.payload);
     },
   },
 });
 
-export default querySlice.reducer;
+export default formSlice.reducer;

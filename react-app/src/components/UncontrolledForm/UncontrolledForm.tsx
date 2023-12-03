@@ -2,11 +2,16 @@ import { object, string, number, mixed, bool } from 'yup';
 import './UncontrolledFrom.scss';
 import { FormEvent, useRef, useState } from 'react';
 import { isValidFileType } from '../../utils/validateFile';
+import { useAppDispatch } from '../../hooks/redux';
+import { formSlice } from '../../store/reducers/formDataSlice';
 
 const MAX_FILE_SIZE = 202400;
 
 export default function UndcontrolledForm() {
   const [gender, setGender] = useState<string>();
+  const dispatch = useAppDispatch();
+  const { addForm } = formSlice.actions;
+
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -56,7 +61,7 @@ export default function UndcontrolledForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('submit');
+
     const formData = {
       username: nameRef.current?.value,
       age: ageRef.current?.value,
@@ -68,11 +73,32 @@ export default function UndcontrolledForm() {
       image: imageRef.current?.files ? imageRef.current?.files[0] : null,
     };
 
-    console.log(formData);
     const isValid = await userSchema.isValid(formData, { abortEarly: false });
 
-    if (isValid) console.log('valid', formData);
-    else
+    if (isValid) {
+      console.log('valid', formData);
+      delete formData.passwordrepeat;
+      const reader = new FileReader();
+      if (formData.image) reader.readAsDataURL(formData.image);
+      if (formData.image) {
+        console.log('if');
+        const { username, age, email, password, gender, terms } = formData;
+        reader.onloadend = () => {
+          console.log('loaded');
+          dispatch(
+            addForm({
+              username,
+              age,
+              email,
+              password,
+              gender,
+              terms,
+              image: reader.result,
+            })
+          );
+        };
+      }
+    } else
       userSchema.validate(formData, { abortEarly: false }).catch((err) => {
         console.log(err);
       });

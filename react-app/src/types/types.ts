@@ -1,9 +1,9 @@
-export interface FormFields extends HTMLFormElement {
-  username: HTMLInputElement;
-  age: HTMLInputElement;
-  email: HTMLInputElement;
-  password: HTMLInputElement;
-  gender: HTMLInputElement;
-  terms: HTMLInputElement;
-  image: HTMLInputElement;
+export interface UserFormData {
+  username?: string;
+  age?: string;
+  email?: string;
+  password?: string;
+  gender?: string;
+  terms?: string;
+  image?: string | ArrayBuffer | null;
 }
