@@ -6,6 +6,7 @@ export interface UserFormData {
   gender?: string;
   terms?: boolean | string;
   image?: string | ArrayBuffer | null;
+  country?: string;
 }
 
 export interface RawUserFormsData {
@@ -17,4 +18,5 @@ export interface RawUserFormsData {
   gender: string;
   terms: boolean | undefined;
   image: FileList;
+  country: string;
 }

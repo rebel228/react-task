@@ -1,8 +1,8 @@
 import { object, string, number, mixed, bool, ValidationError } from 'yup';
 import './From.scss';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import { isValidFileType } from '../../utils/validateFile';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,10 +20,12 @@ export default function UndcontrolledForm() {
     gender: false,
     terms: false,
     image: false,
+    country: false,
   });
 
   const dispatch = useAppDispatch();
   const { addForm } = formSlice.actions;
+  const countries = useAppSelector((state) => state.countiesReducer);
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -31,6 +33,7 @@ export default function UndcontrolledForm() {
   const passwordRepeatRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
+  const countriesRef = useRef<HTMLInputElement>(null);
 
   const formData = {
     username: nameRef.current?.value,
@@ -41,6 +44,7 @@ export default function UndcontrolledForm() {
     gender: gender,
     terms: termsRef.current?.value,
     image: imageRef.current?.files ? imageRef.current?.files[0] : null,
+    country: countriesRef.current?.value,
   };
 
   const userSchema = object({
@@ -81,11 +85,12 @@ export default function UndcontrolledForm() {
         'max allowed size is 100KB',
         (value) => value && value.size <= MAX_FILE_SIZE
       ),
+    country: string()
+      .required('please select a country')
+      .test('is-validcountry', 'please select a valid country', (value) =>
+        countries.includes(value)
+      ),
   });
-
-  useEffect(() => {
-    console.log(errors);
-  }, [errors]);
 
   const handleGender = (event: FormEvent<HTMLDivElement>) => {
     const element = event.target as HTMLInputElement;
@@ -94,7 +99,6 @@ export default function UndcontrolledForm() {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     formData.image = imageRef.current?.files
       ? imageRef.current?.files[0]
       : null;
@@ -151,6 +155,7 @@ export default function UndcontrolledForm() {
           gender: validationErrors.gender || false,
           terms: validationErrors.terms || false,
           image: validationErrors.image || false,
+          country: validationErrors.country || false,
         };
       });
     });
@@ -307,6 +312,32 @@ export default function UndcontrolledForm() {
           ref={imageRef}
         />
         <div className="invalid-tooltip">{errors.image && errors.image}</div>
+      </div>
+
+      <div
+        id="countryfield"
+        className={`field${errors.username ? ' error' : ''}`}
+      >
+        <label className="field__label" htmlFor="country">
+          Country
+        </label>
+        <input
+          className="form-control field__input"
+          type="text"
+          id="country"
+          list="country-list"
+          name="country"
+          ref={countriesRef}
+          required
+        />
+        <datalist id="country-list">
+          {countries.map((country, index) => {
+            return <option value={country} key={index} />;
+          })}
+        </datalist>
+        <div className="invalid-tooltip">
+          {errors.country && errors.country}
+        </div>
       </div>
 
       <div className="field submit">

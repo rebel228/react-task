@@ -1,7 +1,7 @@
 import { object, string, number, mixed, bool, ref } from 'yup';
 import './From.scss';
 import { isValidFileType } from '../../utils/validateFile';
-import { useAppDispatch } from '../../hooks/redux';
+import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -45,6 +45,11 @@ export default function ControlledForm() {
         'max allowed size is 100KB',
         (value) => value[0] && value[0].size <= MAX_FILE_SIZE
       ),
+    country: string()
+      .required('please select a country')
+      .test('is-validcountry', 'please select a valid country', (value) =>
+        countries.includes(value)
+      ),
   });
 
   const {
@@ -60,13 +65,15 @@ export default function ControlledForm() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { addForm } = formSlice.actions;
+  const countries = useAppSelector((state) => state.countiesReducer);
 
   const onSubmit = async (data: Partial<RawUserFormsData>) => {
     console.log(data);
     const reader = new FileReader();
     if (data.image && data.image[0]) reader.readAsDataURL(data.image[0]);
-    const { username, age, email, password, gender, terms } = data;
+    const { username, age, email, password, gender, terms, country } = data;
     reader.onloadend = () => {
+      console.log(terms);
       dispatch(
         addForm({
           username,
@@ -76,6 +83,7 @@ export default function ControlledForm() {
           gender,
           terms,
           image: reader.result,
+          country,
         })
       );
       navigate('/');
@@ -208,9 +216,9 @@ export default function ControlledForm() {
       <div id="terms-field" className={`field${errors.terms ? ' error' : ''}`}>
         <label className="field__label">Read and accept T&C</label>
         <input
+          {...register('terms')}
           className="form-control field__input"
           type="checkbox"
-          name="terms"
           id="terms"
           value={'true'}
           required
@@ -234,6 +242,31 @@ export default function ControlledForm() {
         />
         <div className="invalid-tooltip">
           {errors.image && errors.image.message}
+        </div>
+      </div>
+
+      <div
+        id="countryfield"
+        className={`field${errors.username ? ' error' : ''}`}
+      >
+        <label className="field__label" htmlFor="country">
+          Country
+        </label>
+        <input
+          {...register('country')}
+          className="form-control field__input"
+          type="text"
+          id="country"
+          list="country-list"
+          required
+        />
+        <datalist id="country-list">
+          {countries.map((country, index) => {
+            return <option value={country} key={index} />;
+          })}
+        </datalist>
+        <div className="invalid-tooltip">
+          {errors.country && errors.country.message}
         </div>
       </div>
 
