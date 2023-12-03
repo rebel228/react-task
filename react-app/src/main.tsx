@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import UndcontrolledForm from './components/UncontrolledForm/UncontrolledForm.tsx';
 
 const DEFAULT_PATH = '/';
 
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: `/formone`,
-        element: <div />,
+        element: <UndcontrolledForm />,
       },
       {
         path: `/formtwo`,

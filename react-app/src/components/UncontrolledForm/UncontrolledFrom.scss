@@ -1,0 +1,26 @@
+.Form__uncontrolled {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.field {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+}
+
+.field__label {
+  width: 155px;
+}
+
+.invalid-tooltip {
+  position: absolute;
+  width: 177px;
+  left: 165px;
+  top: 35px;
+  font-size: 12px;
+  text-align: center;
+  color: rgb(177, 10, 10);
+}
