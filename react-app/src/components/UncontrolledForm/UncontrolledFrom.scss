@@ -7,7 +7,7 @@
 .field {
   display: flex;
   gap: 10px;
-  padding: 12px;
+  padding: 15px;
   align-items: center;
   position: relative;
   border: 1px solid rgba(128, 0, 128, 0.363);
@@ -25,15 +25,13 @@
   width: 155px;
 }
 
-.field__description {
-  margin: 0;
-}
+.field__input {}
 
 .invalid-tooltip {
   position: absolute;
-  width: 177px;
-  left: 165px;
-  top: 29px;
+  width: 277px;
+  left: 125px;
+  top: 33px;
   font-size: 12px;
   text-align: center;
   color: rgb(177, 10, 10);

@@ -56,7 +56,12 @@ export default function UndcontrolledForm() {
       .positive('age must be positive')
       .integer('age must be integer'),
     email: string().required('please enter email').email('enter a valid email'),
-    password: string().required('please enter a password'),
+    password: string()
+      .required('please enter a password')
+      .matches(/^(?=.*[a-z])/, 'Must contain at least one lowercase character')
+      .matches(/^(?=.*[A-Z])/, 'Must contain at least one uppercase character')
+      .matches(/^(?=.*[0-9])/, 'Must contain at least one number')
+      .matches(/^(?=.*[!@#%&])/, 'Must contain at least one special character'),
     passwordrepeat: string()
       .required('Please repeat the password')
       .test(
@@ -177,9 +182,6 @@ export default function UndcontrolledForm() {
         <div className="invalid-tooltip">
           {errors.username && errors.username}
         </div>
-        <p className="field__description">
-          First character must me upper cased
-        </p>
       </div>
 
       <div id="agefield" className={`field${errors.age ? ' error' : ''}`}>
@@ -195,9 +197,6 @@ export default function UndcontrolledForm() {
           required
         />
         <div className="invalid-tooltip">{errors.age && errors.age}</div>
-        <p className="field__description">
-          Should be number, no negative values
-        </p>
       </div>
 
       <div id="emailfield" className={`field${errors.email ? ' error' : ''}`}>
@@ -233,10 +232,6 @@ export default function UndcontrolledForm() {
         <div className="invalid-tooltip">
           {errors.password && errors.password}
         </div>
-        <p className="field__description">
-          Use a number, a uppercased character, a lowercased character, a
-          special character
-        </p>
       </div>
 
       <div
