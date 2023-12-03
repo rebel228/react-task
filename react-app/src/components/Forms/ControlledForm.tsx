@@ -1,6 +1,5 @@
 import { object, string, number, mixed, bool, ref } from 'yup';
 import './From.scss';
-import { useEffect } from 'react';
 import { isValidFileType } from '../../utils/validateFile';
 import { useAppDispatch } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
@@ -51,16 +50,16 @@ export default function ControlledForm() {
   const {
     register,
     handleSubmit,
+    formState,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(userSchema), mode: 'all' });
+  } = useForm({
+    resolver: yupResolver(userSchema),
+    mode: 'all',
+  });
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { addForm } = formSlice.actions;
-
-  useEffect(() => {
-    //console.log(errors);
-  }, [errors]);
 
   const onSubmit = async (data: Partial<RawUserFormsData>) => {
     console.log(data);
@@ -239,7 +238,12 @@ export default function ControlledForm() {
       </div>
 
       <div className="field submit">
-        <button id="form-submit" type="submit" className="field__button">
+        <button
+          id="form-submit"
+          type="submit"
+          className={`field__button${!formState.isValid && ' disabled'}`}
+          disabled={!formState.isValid}
+        >
           Submit
         </button>
       </div>
