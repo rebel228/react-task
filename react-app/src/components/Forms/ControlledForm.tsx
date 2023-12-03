@@ -6,7 +6,7 @@ import { formSlice } from '../../store/reducers/formDataSlice';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { RawUserFormsData } from '../../types/types';
+import { RawUserFormsDataCnt } from '../../types/types';
 
 const MAX_FILE_SIZE = 202400;
 
@@ -67,7 +67,7 @@ export default function ControlledForm() {
   const { addForm } = formSlice.actions;
   const countries = useAppSelector((state) => state.countiesReducer);
 
-  const onSubmit = async (data: Partial<RawUserFormsData>) => {
+  const onSubmit = async (data: Partial<RawUserFormsDataCnt>) => {
     console.log(data);
     const reader = new FileReader();
     if (data.image && data.image[0]) reader.readAsDataURL(data.image[0]);

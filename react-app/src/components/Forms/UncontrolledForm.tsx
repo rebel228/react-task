@@ -5,12 +5,12 @@ import { isValidFileType } from '../../utils/validateFile';
 import { useAppDispatch, useAppSelector } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
 import { useNavigate } from 'react-router-dom';
+import { RawUserFormsDataUnc } from '../../types/types';
 
 const MAX_FILE_SIZE = 202400;
 
 export default function UndcontrolledForm() {
   const navigate = useNavigate();
-  const [gender, setGender] = useState<string>();
   const [errors, setErrors] = useState({
     username: false,
     age: false,
@@ -34,18 +34,6 @@ export default function UndcontrolledForm() {
   const termsRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
   const countriesRef = useRef<HTMLInputElement>(null);
-
-  const formData = {
-    username: nameRef.current?.value,
-    age: ageRef.current?.value,
-    email: emailRef.current?.value,
-    password: passwordRef.current?.value,
-    passwordrepeat: passwordRepeatRef.current?.value,
-    gender: gender,
-    terms: termsRef.current?.value,
-    image: imageRef.current?.files ? imageRef.current?.files[0] : null,
-    country: countriesRef.current?.value,
-  };
 
   const userSchema = object({
     username: string()
@@ -92,48 +80,51 @@ export default function UndcontrolledForm() {
       ),
   });
 
-  const handleGender = (event: FormEvent<HTMLDivElement>) => {
-    const element = event.target as HTMLInputElement;
-    setGender(element.value);
-  };
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    formData.image = imageRef.current?.files
-      ? imageRef.current?.files[0]
-      : null;
+    const form = e.currentTarget;
+    const data = {
+      username: form.username.value,
+      age: form.age.value,
+      email: form.email.value,
+      password: form.password.value,
+      passwordrepeat: form.passwordrepeat.value,
+      gender: form.gender.value,
+      terms: form.terms.value,
+      image: form.image.files[0] || null,
+      country: form.country.value,
+    };
 
-    const isValid = await userSchema.isValid(formData, { abortEarly: false });
+    const isValid = await userSchema.isValid(data, { abortEarly: false });
 
-    if (isValid) handleDispatch();
-    else handleErrors();
+    if (isValid) handleDispatch(data);
+    else handleErrors(data);
   };
 
-  const handleDispatch = async () => {
-    console.log('valid', formData);
+  const handleDispatch = async (data: RawUserFormsDataUnc) => {
+    console.log('valid', data);
     const reader = new FileReader();
-    if (formData.image) reader.readAsDataURL(formData.image);
-    if (formData.image) {
-      const { username, age, email, password, gender, terms } = formData;
-      reader.onloadend = () => {
-        dispatch(
-          addForm({
-            username,
-            age,
-            email,
-            password,
-            gender,
-            terms,
-            image: reader.result,
-          })
-        );
-        navigate('/');
-      };
-    }
+    if (data.image) reader.readAsDataURL(data.image);
+    const { username, age, email, password, gender, terms, country } = data;
+    reader.onloadend = () => {
+      dispatch(
+        addForm({
+          username,
+          age,
+          email,
+          password,
+          gender,
+          terms,
+          image: reader.result,
+          country,
+        })
+      );
+      navigate('/');
+    };
   };
 
-  const handleErrors = async () => {
-    await userSchema.validate(formData, { abortEarly: false }).catch((err) => {
+  const handleErrors = async (data: RawUserFormsDataUnc) => {
+    await userSchema.validate(data, { abortEarly: false }).catch((err) => {
       const validationErrors = err.inner.reduce(
         (acc: ValidationError[], error: ValidationError) => {
           if (error.path)
@@ -144,7 +135,7 @@ export default function UndcontrolledForm() {
         },
         {}
       );
-      console.log('validation errors:', validationErrors);
+
       setErrors(() => {
         return {
           username: validationErrors.username || false,
@@ -262,7 +253,6 @@ export default function UndcontrolledForm() {
       <div
         id="gender-field"
         className={`field${errors.gender ? ' error' : ''}`}
-        onChange={handleGender}
       >
         <label className="field__label">Select gender</label>
         <input
