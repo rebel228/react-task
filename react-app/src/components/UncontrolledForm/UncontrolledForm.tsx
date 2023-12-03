@@ -4,14 +4,15 @@ import { FormEvent, useRef, useState } from 'react';
 import { isValidFileType } from '../../utils/validateFile';
 import { useAppDispatch } from '../../hooks/redux';
 import { formSlice } from '../../store/reducers/formDataSlice';
+import { useNavigate } from 'react-router-dom';
 
 const MAX_FILE_SIZE = 202400;
 
 export default function UndcontrolledForm() {
+  const navigate = useNavigate();
   const [gender, setGender] = useState<string>();
   const dispatch = useAppDispatch();
   const { addForm } = formSlice.actions;
-
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
@@ -19,6 +20,18 @@ export default function UndcontrolledForm() {
   const passwordRepeatRef = useRef<HTMLInputElement>(null);
   const termsRef = useRef<HTMLInputElement>(null);
   const imageRef = useRef<HTMLInputElement>(null);
+
+  const formData = {
+    username: nameRef.current?.value,
+    age: ageRef.current?.value,
+    email: emailRef.current?.value,
+    password: passwordRef.current?.value,
+    passwordrepeat: passwordRepeatRef.current?.value,
+    gender: gender,
+    terms: termsRef.current?.value,
+    image: imageRef.current?.files ? imageRef.current?.files[0] : null,
+  };
+
   const userSchema = object({
     username: string()
       .required('please enter your name')
@@ -62,29 +75,19 @@ export default function UndcontrolledForm() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = {
-      username: nameRef.current?.value,
-      age: ageRef.current?.value,
-      email: emailRef.current?.value,
-      password: passwordRef.current?.value,
-      passwordrepeat: passwordRepeatRef.current?.value,
-      gender: gender,
-      terms: termsRef.current?.value,
-      image: imageRef.current?.files ? imageRef.current?.files[0] : null,
-    };
+    formData.image = imageRef.current?.files
+      ? imageRef.current?.files[0]
+      : null;
 
     const isValid = await userSchema.isValid(formData, { abortEarly: false });
 
     if (isValid) {
       console.log('valid', formData);
-      delete formData.passwordrepeat;
       const reader = new FileReader();
       if (formData.image) reader.readAsDataURL(formData.image);
       if (formData.image) {
-        console.log('if');
         const { username, age, email, password, gender, terms } = formData;
         reader.onloadend = () => {
-          console.log('loaded');
           dispatch(
             addForm({
               username,
@@ -96,6 +99,7 @@ export default function UndcontrolledForm() {
               image: reader.result,
             })
           );
+          navigate('/');
         };
       }
     } else
