@@ -91,7 +91,7 @@ export default function UndcontrolledForm() {
           className="form-control field__input"
           type="radio"
           name="gender"
-          id="gender"
+          id="man"
           value={'man'}
         />
         <label htmlFor="man">Man</label>
@@ -99,7 +99,7 @@ export default function UndcontrolledForm() {
           className="form-control field__input"
           type="radio"
           name="gender"
-          id="gender"
+          id="woman"
           value={'woman'}
         />
         <label htmlFor="woman">Woman</label>
@@ -114,9 +114,44 @@ export default function UndcontrolledForm() {
           name="terms"
           id="terms"
           value={'terms'}
+          required
         />
         <label htmlFor="terms">I have read and accept T&C</label>
         <div className="invalid-tooltip"></div>
+      </div>
+
+      <div id="image-field" className="field">
+        <label className="field__label" htmlFor="image">
+          Upload an image
+        </label>
+        <input
+          className="form-control field__input"
+          type="file"
+          name="image"
+          id="image"
+          accept="image/png, image/jpeg"
+        />
+        <div className="invalid-tooltip"></div>
+      </div>
+
+      <div id="image-field" className="field">
+        <label className="field__label" htmlFor="image">
+          Upload an image
+        </label>
+        <input
+          className="form-control field__input"
+          type="file"
+          name="image"
+          id="image"
+          accept="image/png, image/jpeg"
+        />
+        <div className="invalid-tooltip"></div>
+      </div>
+
+      <div className="field">
+        <button id="form-submit" type="submit" className="field__button">
+          Submit
+        </button>
       </div>
     </form>
   );
