@@ -68,12 +68,10 @@ export default function ControlledForm() {
   const countries = useAppSelector((state) => state.countiesReducer);
 
   const onSubmit = async (data: Partial<RawUserFormsDataCnt>) => {
-    console.log(data);
     const reader = new FileReader();
     if (data.image && data.image[0]) reader.readAsDataURL(data.image[0]);
     const { username, age, email, password, gender, terms, country } = data;
     reader.onloadend = () => {
-      console.log(terms);
       dispatch(
         addForm({
           username,

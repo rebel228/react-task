@@ -102,7 +102,6 @@ export default function UndcontrolledForm() {
   };
 
   const handleDispatch = async (data: RawUserFormsDataUnc) => {
-    console.log('valid', data);
     const reader = new FileReader();
     if (data.image) reader.readAsDataURL(data.image);
     const { username, age, email, password, gender, terms, country } = data;
