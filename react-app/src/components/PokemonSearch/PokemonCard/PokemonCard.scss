@@ -4,10 +4,12 @@
   max-height: 400px;
   background-color: rgba(184, 218, 218, 0.767);
   border-radius: 18px;
-  cursor: pointer;
   transition: all 0.25s;
-  &:hover {
-    background-color: rgb(184, 218, 218);
+  &.active {
+    cursor: pointer;
+    &:hover {
+      background-color: rgb(184, 218, 218);
+    }
   }
 }
 

@@ -1,8 +1,8 @@
 import "./loader.scss";
 
-export default function Loader() {
+export default function Loader(props: { big?: boolean }) {
   return (
-    <div className="loader-wrapper">
+    <div className={props.big ? "loader-wrapper big" : "loader-wrapper"}>
       <div className="loader"></div>
     </div>
   );

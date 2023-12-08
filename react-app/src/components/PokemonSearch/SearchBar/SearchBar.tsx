@@ -1,20 +1,25 @@
-import { ChangeEvent, useRef, useContext } from "react";
+import { useRef, useEffect } from "react";
 import ErrorButton from "../../ErrorButton/ErrorButton";
 import "./searchBar.scss";
-import { PokemonSearchContext } from "../Context/Context";
+import { useAppDispatch, useAppSelector } from "../../../hooks/redux";
+import { useSearchParams } from "react-router-dom";
+import { searchSlice } from "../../../store/reducers/searchSlice";
 
-export default function SearchBar({
-  search,
-}: {
-  search: (value: string) => void;
-}) {
-  const { searchValue, setSearchValue } = useContext(PokemonSearchContext);
+export default function SearchBar() {
   const searchFild = useRef<HTMLInputElement>(null);
+  const { searchString } = useAppSelector((state) => state.searchReducer);
+  const [, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+  const { setSearchString } = searchSlice.actions;
 
-  const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
-    const lowerCase = event.target.value.toLocaleLowerCase();
-    if (lowerCase) setSearchValue(lowerCase);
-    else setSearchValue("");
+  useEffect(() => {
+    if (searchFild.current) searchFild.current.value = searchString;
+  });
+
+  const handleSearch = (value: string) => {
+    setSearchParams({ search: value, page: "1" });
+    localStorage.setItem("search", value);
+    dispatch(setSearchString({ searchString: value }));
   };
 
   return (
@@ -23,14 +28,14 @@ export default function SearchBar({
         type="text"
         className="search__input"
         id="search"
-        onChange={inputHandler}
-        value={searchValue}
         ref={searchFild}
       />
       <button
         className="search__button"
         onClick={() =>
-          search(searchFild.current?.value ? searchFild.current.value : "")
+          handleSearch(
+            searchFild.current?.value ? searchFild.current.value : "",
+          )
         }
       >
         Search

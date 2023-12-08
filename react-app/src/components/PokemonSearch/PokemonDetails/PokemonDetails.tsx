@@ -1,30 +1,24 @@
-import {
-  LoaderFunctionArgs,
-  useLoaderData,
-  useNavigate,
-} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "./pokemonDetails.scss";
-import getPokemonById from "../../Api/getPokemonById";
-import { Pokemon } from "pokenode-ts";
+
 import { upperFirstLetter } from "../utils";
 import { DEFAULT_PATH } from "../../../constants";
-
-export const pokemonDetailsLoader = async ({ params }: LoaderFunctionArgs) => {
-  const pokemon = await getPokemonById(Number(params.id));
-  return { pokemon };
-};
+import { pokemonAPI } from "../../../services/PokemonService";
+import Loader from "../../Loader/Loader";
 
 export default function PokemonDatails() {
-  const { pokemon } = useLoaderData() as { pokemon: Pokemon | undefined };
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
-
+  const { data: pokemon, isLoading } = pokemonAPI.useGetPokemonByNameQuery(
+    location.pathname.split("/").pop() || "",
+  );
   const closeDetails = () => {
     navigate({ pathname: DEFAULT_PATH, search: queryParams.toString() });
   };
 
   return (
     <div className="details-section">
+      {isLoading && <Loader />}
       {pokemon && (
         <div className="pokemon-details">
           <div className="close-btn" onClick={closeDetails}></div>
