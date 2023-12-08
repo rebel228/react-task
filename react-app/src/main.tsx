@@ -2,15 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
-import SearchResults, {
-  pokemonsLoader,
-} from "./components/PokemonSearch/SearchResults/SearchResults";
 import App from "./App";
+import PokemonsSearch, {
+  pokemonsLoader,
+} from "./components/PokemonSearch/pokemonsSearch";
 import PokemonDatails, {
   pokemonDetailsLoader,
 } from "./components/PokemonSearch/PokemonDetails/PokemonDetails";
-
-export const DEFAULT_PATH = "/";
+import { DEFAULT_PATH } from "./constants";
 
 const router = createBrowserRouter([
   {
@@ -19,7 +18,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: `${DEFAULT_PATH}/`,
-        element: <SearchResults />,
+        element: <PokemonsSearch />,
         loader: pokemonsLoader,
         children: [
           {

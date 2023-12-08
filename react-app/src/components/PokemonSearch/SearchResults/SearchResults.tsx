@@ -1,33 +1,18 @@
-import { PokemonDataResponse } from "../../../types";
-import {
-  useLoaderData,
-  LoaderFunctionArgs,
-  useNavigate,
-  Outlet,
-  useMatch,
-} from "react-router-dom";
+import { useNavigate, Outlet, useMatch } from "react-router-dom";
 import PokemonCard from "../PokemonCard/PokemonCard";
-import getPokemonDataByName from "../../Api/getPokemonByName";
 import "./searchResults.scss";
-import { DEFAULT_PATH } from "../../../main";
-
-export const pokemonsLoader = async ({ request }: LoaderFunctionArgs) => {
-  const queryParams = new URL(request.url).searchParams;
-  const search = queryParams.get("search");
-  const limit = queryParams.get("limit");
-  const offset = queryParams.get("offset");
-  const pokemons = await getPokemonDataByName(search || "", offset, limit);
-  return { pokemons };
-};
+import { useContext } from "react";
+import { PokemonSearchContext } from "../Context/Context";
+import { DEFAULT_PATH } from "../../../constants";
 
 export default function SearchResults() {
-  const { pokemons } = useLoaderData() as { pokemons: PokemonDataResponse };
+  const { pokemons } = useContext(PokemonSearchContext);
   const navigate = useNavigate();
   const queryParams = new URLSearchParams(location.search);
   const isShowingDetails = useMatch("details/:id");
 
   const handlePrev = () => {
-    if (!pokemons.prev) return;
+    if (!pokemons?.prev) return;
     const params = getQuerryParamsFromUrl(pokemons.prev);
     if (!params.offset || !params.limit) return;
     queryParams.set("offset", params.offset);
@@ -36,7 +21,7 @@ export default function SearchResults() {
   };
 
   const handleNext = () => {
-    if (!pokemons.next) return;
+    if (!pokemons?.next) return;
     const params = getQuerryParamsFromUrl(pokemons.next);
     if (!params.offset || !params.limit) return;
     queryParams.set("offset", params.offset);
@@ -65,17 +50,17 @@ export default function SearchResults() {
 
   return (
     <div className="pokemon-section">
-      <div
-        className="search-results"
-        onClick={isShowingDetails ? closeDetails : undefined}
-      >
-        {pokemons.prev ? (
+      <div className="search-results">
+        {pokemons?.prev ? (
           <button onClick={handlePrev}>&lt;</button>
         ) : (
           <button className="disabled">&lt;</button>
         )}
-        <div className="search-results__container">
-          {pokemons.data.map((pokemon) => {
+        <div
+          className="search-results__container"
+          onClick={isShowingDetails ? closeDetails : undefined}
+        >
+          {pokemons?.data.map((pokemon) => {
             if (pokemon)
               return (
                 <PokemonCard
@@ -87,9 +72,11 @@ export default function SearchResults() {
                 />
               );
           })}
-          {pokemons.data.every((pokemon) => !pokemon) && <h3>Nothing found</h3>}
+          {pokemons?.data.every((pokemon) => !pokemon) && (
+            <h3>Nothing found</h3>
+          )}
         </div>
-        {pokemons.next ? (
+        {pokemons?.next ? (
           <button onClick={handleNext}>&gt;</button>
         ) : (
           <button className="disabled">&gt;</button>

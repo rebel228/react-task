@@ -1,22 +1,20 @@
-import { ChangeEvent, useRef } from "react";
+import { ChangeEvent, useRef, useContext } from "react";
 import ErrorButton from "../../ErrorButton/ErrorButton";
 import "./searchBar.scss";
+import { PokemonSearchContext } from "../Context/Context";
 
 export default function SearchBar({
   search,
-  inputValue,
-  setInputValue,
 }: {
-  search: (name: string) => void;
-  inputValue: string;
-  setInputValue: (value: string) => void;
+  search: (value: string) => void;
 }) {
+  const { searchValue, setSearchValue } = useContext(PokemonSearchContext);
   const searchFild = useRef<HTMLInputElement>(null);
 
   const inputHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const lowerCase = event.target.value.toLocaleLowerCase();
-    if (lowerCase) setInputValue(lowerCase);
-    else setInputValue("");
+    if (lowerCase) setSearchValue(lowerCase);
+    else setSearchValue("");
   };
 
   return (
@@ -26,7 +24,7 @@ export default function SearchBar({
         className="search__input"
         id="search"
         onChange={inputHandler}
-        value={inputValue}
+        value={searchValue}
         ref={searchFild}
       />
       <button
