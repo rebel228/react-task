@@ -1,0 +1,14 @@
+.search__contols {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.controls__amount {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
