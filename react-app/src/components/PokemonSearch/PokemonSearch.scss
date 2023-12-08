@@ -1,0 +1,24 @@
+.search-contols {
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+
+.amount-control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.pokemon-section {
+  width: 100%;
+  display: flex;
+}
+
+.pagenumber-text {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: 600;
+}

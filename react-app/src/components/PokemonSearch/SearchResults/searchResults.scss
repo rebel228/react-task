@@ -1,0 +1,19 @@
+.search-results {
+  display: flex;
+  justify-content: space-between;
+  width: calc(100% - 30px);
+  gap: 15px;
+}
+
+.search-results__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: calc(100vh - 120px);
+  overflow-y: scroll;
+  gap: 15px;
+}
+
+.details-section {
+  align-self: center;
+}

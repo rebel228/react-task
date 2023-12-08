@@ -5,6 +5,12 @@ export type PokemonCardData = {
   descr: string;
 };
 
+export type PokemonDataResponse = {
+  data: (PokemonCardData | undefined)[];
+  next?: string | null;
+  prev?: string | null;
+};
+
 export interface PokemonElementProps {
   pokemons: PokemonCardData[];
 }
